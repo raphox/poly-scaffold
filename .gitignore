@@ -8,6 +8,7 @@ built/*
 coverage/
 internal/
 node_modules/
+tmp/
 
 # Next.js build output
 .next

@@ -1,0 +1,43 @@
+{
+  "name": "poly-scaffold",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && npm run build:templates",
+    "build:templates": "rm -rf dist/templates && cpx 'src/templates/**/*' dist/templates",
+    "pretest": "npm run build",
+    "scaffold": "npm run build && node dist/scaffold.js",
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.4.1",
+  "dependencies": {
+    "@inquirer/prompts": "^7.3.2",
+    "fs": "0.0.1-security",
+    "glob": "^11.0.1",
+    "inflection": "^3.0.2",
+    "mustache": "^4.2.0",
+    "yargs": "^17.7.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@inquirer/testing": "^2.1.44",
+    "@types/mocha": "^10.0.10",
+    "@types/mustache": "^4.2.5",
+    "@types/node": "^22.13.4",
+    "@types/yargs": "^17.0.33",
+    "cpx": "^1.5.0",
+    "execa": "^9.5.2",
+    "mocha": "^11.1.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "mocha": {
+    "require": "ts-node/register",
+    "spec": "src/**/*.spec.ts"
+  }
+}

@@ -1,0 +1,18 @@
+**/.DS_Store
+.env
+.node_modules/
+.pnpm-store/
+.temp
+.cache
+built/*
+coverage/
+internal/
+node_modules/
+
+# Next.js build output
+.next
+out
+
+# Nuxt.js build / generate output
+.nuxt
+dist

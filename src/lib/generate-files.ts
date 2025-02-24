@@ -59,9 +59,7 @@ export async function generateFiles(
     const newFileContent = render(filePath, substitutions);
 
     fs.mkdirSync(path.dirname(computedPath), { recursive: true });
-    fs.writeFileSync
-      ? fs.writeFileSync(computedPath, newFileContent)
-      : fs.writeFile(computedPath, newFileContent, () => { });
+    fs.writeFileSync(computedPath, newFileContent);
   };
 }
 

@@ -5,7 +5,6 @@ import { deepStrictEqual, match } from "assert";
 
 import { Framework } from "../types";
 import { initFramework } from ".";
-import Next from "./next";
 
 describe('Next.js', () => {
   var tempDir: string;
@@ -17,25 +16,32 @@ describe('Next.js', () => {
   });
 
   it('render all files', async () => {
-    framework.generate(tempDir, { name: 'foo' });
+    framework.generate(tempDir, { resource: 'foo', name: 'bar' });
 
     const files = fs.readdirSync(tempDir, { recursive: true });
-    deepStrictEqual(files, [
-      "_app.tsx",
-      "_document.tsx",
-      "components",
-      "index.tsx",
+    deepStrictEqual(files.sort(), [
+      // pages
       "pages",
-      "providers.tsx",
-      "services.ts",
+      "pages/_app.tsx",
+      "pages/_document.tsx",
+      "pages/index.tsx",
+      "pages/foo",
+      "pages/foo/index.tsx",
+      "pages/foo/new.tsx",
+      "pages/foo/[id]",
+      "pages/foo/[id]/edit.tsx",
+      "pages/foo/[id]/index.tsx",
+
+      // components
+      "components",
       "components/foo-form.tsx",
       "components/foo.tsx",
-      "pages/[id]",
-      "pages/index.tsx",
-      "pages/new.tsx",
-      "pages/[id]/edit.tsx",
-      "pages/[id]/index.tsx",
-    ]);
+
+      // shared
+      ".env.local",
+      "providers.tsx",
+      "services.ts",
+    ].sort());
   });
 
   it('render a single page', () => {

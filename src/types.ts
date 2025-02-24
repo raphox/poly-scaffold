@@ -1,11 +1,11 @@
-export interface FrameworkInstance {
-  klass?: any;
+export type FrameworkGenerator = (framework: Framework, target: string, data: any) => void;
+export type FrameworkTemplate = Record<string, Record<string, string>>;
+
+export interface FrameworkOption {
   title: string;
   folder: string;
   disabled?: boolean | string;
 }
-
-export type FrameworkTemplate = Record<string, Record<string, string>>;
 
 export interface Framework {
   title: string;

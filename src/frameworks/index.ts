@@ -3,12 +3,13 @@ import * as mustache from 'mustache';
 import * as path from 'path';
 import * as glob from 'glob';
 
-import NextFramework from './next';
-import NuxtFramework from './nuxt';
-import { Framework, FrameworkTemplate, FrameworkInstance } from '../types';
+import { Framework, FrameworkTemplate } from '../types';
 
-export function initFramework(name: string): Framework {
-  const { title, folder, klass } = FRAMEWORKS[name];
+import FRAMEWORKS from './options';
+import GENERATORS from './generators';
+
+function initFramework(name: string): Framework {
+  const { title, folder } = FRAMEWORKS[name];
   const templates = getTemplates(folder);
 
   return {
@@ -16,7 +17,7 @@ export function initFramework(name: string): Framework {
     folder,
     templates,
     generate(target: string, data: any) {
-      return klass.generate(this, target, data);
+      return GENERATORS[name](this, target, data);
     },
     render(filePath: string, data: any) {
       const template = fs.readFileSync(filePath, 'utf8');
@@ -30,12 +31,12 @@ function getTemplates(folder: string) {
   const templatesPath = path.join(__dirname, '..', 'templates', folder);
 
   return glob
-    .sync(`${templatesPath}/**/*.mustache`)
+    .sync(`${templatesPath}/**/*.mustache`, { dot: true })
     .reduce((acc: FrameworkTemplate, template) => {
       const parts = template.split('/');
       const index = parts.indexOf(folder);
       const relativePath = parts.slice(index + 1, -1).join('/') || 'others';
-      const fileName = parts[parts.length - 1].split('.')[0];
+      const fileName = parts[parts.length - 1].split('.')[0] || parts[parts.length - 1].replace('.mustache', '');
 
       acc[relativePath] ??= {};
       acc[relativePath][fileName] = template;
@@ -44,31 +45,4 @@ function getTemplates(folder: string) {
     }, {});
 }
 
-export const FRAMEWORKS: Record<string, FrameworkInstance> = {
-  next: {
-    title: 'Next.js',
-    folder: 'next',
-    klass: NextFramework
-  },
-  nuxt: {
-    title: 'Nuxt.js',
-    folder: 'nuxt',
-    disabled: '(soon)',
-    klass: NuxtFramework
-  },
-  esvelte: {
-    title: 'SvelteKit',
-    folder: 'svelte',
-    disabled: '🚧'
-  },
-  express: {
-    title: 'Express',
-    folder: 'express',
-    disabled: '🚧'
-  },
-  nest: {
-    title: 'NestJS',
-    folder: 'nest',
-    disabled: '🚧'
-  }
-};
+export { FRAMEWORKS, initFramework };

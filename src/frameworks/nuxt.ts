@@ -1,8 +1,5 @@
 import { Framework } from "../types";
 
-const NuxtFramework = {
-  generate: async function (framework: Framework, data: any) {
-  }
+export const generator = async function (framework: Framework, target: string, data: any) {
+  throw new Error('Not implemented');
 }
-
-export default NuxtFramework;

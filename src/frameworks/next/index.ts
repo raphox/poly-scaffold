@@ -1,5 +1,5 @@
-import { generateFiles, OverwriteStrategy } from "../lib/generate-files";
-import { Framework } from "../types";
+import { generateFiles, OverwriteStrategy } from "@/lib/generate-files";
+import { Framework } from "@/types";
 
 export const generator = async function (framework: Framework, target: string, data: any) {
   const templates = framework.templates;
@@ -14,7 +14,7 @@ export const generator = async function (framework: Framework, target: string, d
   //   options: { overwriteStrategy: OverwriteStrategy.Prompt }
   // });
 
-  generateFiles({
+  await generateFiles({
     target: `${target}/pages`,
     files: Object.values(templates.pages),
     substitutions: { name: 'World 2025', ext: 'tsx', ...data },
@@ -22,21 +22,21 @@ export const generator = async function (framework: Framework, target: string, d
     options: { overwriteStrategy: OverwriteStrategy.Prompt }
   });
 
-  generateFiles({
+  await generateFiles({
     target: `${target}/pages/${data.resource}`,
     files: Object.values(templates['shared/pages']),
     remaps: {
-      'list': 'index.__ext__',
-      'new': 'new.__ext__',
-      'edit': '[id]/edit.__ext__',
-      'show': '[id]/index.__ext__',
+      'list.mustache': 'index.__ext__.mustache',
+      'new.mustache': 'new.__ext__.mustache',
+      'edit.mustache': '[id]/edit.__ext__.mustache',
+      'show.mustache': '[id]/index.__ext__.mustache',
     },
     substitutions: { name: 'World 2025', ext: 'tsx', ...data },
     render: framework.render,
     options: { overwriteStrategy: OverwriteStrategy.Overwrite }
   });
 
-  generateFiles({
+  await generateFiles({
     target: `${target}/components`,
     files: Object.values(templates['shared/components']),
     substitutions: { name: 'World 2025', ext: 'tsx', ...data },
@@ -44,7 +44,7 @@ export const generator = async function (framework: Framework, target: string, d
     options: { overwriteStrategy: OverwriteStrategy.Overwrite }
   });
 
-  generateFiles({
+  await generateFiles({
     target,
     files: Object.values(templates['shared']),
     substitutions: { name: 'World 2025', ext: 'ts', ...data },

@@ -3,7 +3,7 @@ import * as os from 'os';
 import * as path from 'path';
 import { deepStrictEqual, match } from "assert";
 
-import { Framework } from "../types";
+import { Framework } from "@/types";
 import { initFramework } from ".";
 
 describe('Next.js', () => {
@@ -16,10 +16,10 @@ describe('Next.js', () => {
   });
 
   it('render all files', async () => {
-    framework.generate(tempDir, { resource: 'foo', name: 'bar' });
+    await framework.generate(tempDir, { resource: 'foo', name: 'bar' });
 
     const files = fs.readdirSync(tempDir, { recursive: true });
-    deepStrictEqual(files.sort(), [
+    deepStrictEqual([
       // pages
       "pages",
       "pages/_app.tsx",
@@ -41,11 +41,12 @@ describe('Next.js', () => {
       ".env.local",
       "providers.tsx",
       "services.ts",
-    ].sort());
+    ].sort(), files.sort());
   });
 
   it('render a single page', () => {
-    const result = framework.render(framework.templates.pages.index, { name: 'World 2025' });
+    const pageRef = Object.values(framework.templates.pages)[0];
+    const result = framework.render(pageRef, { name: 'World 2025' });
 
     match(result, /Hello, World 2025/);
   });

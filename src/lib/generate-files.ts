@@ -1,6 +1,15 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { confirm } from '@inquirer/prompts';
+import debug from 'debug';
+import chalk from 'chalk';
+
+debug.enable('generator');
+
+const MUSTACHE_EXTENSION = '.mustache';
+const SUBSTITUTION_PATTERN = /__([^_]+)__/g;
+
+const log = debug('generator');
 
 export enum OverwriteStrategy {
   Overwrite = 'overwrite',
@@ -27,9 +36,6 @@ export async function generateFiles(
       options: GenerateFilesOptions
     }
 ) {
-  options ??= {};
-  options.overwriteStrategy ??= OverwriteStrategy.Overwrite;
-
   const srcFolder = path.dirname(files[0]);
 
   for (const filePath of files) {
@@ -43,10 +49,14 @@ export async function generateFiles(
 
     if (fs.existsSync(computedPath)) {
       if (options.overwriteStrategy === OverwriteStrategy.KeepExisting) {
+        log(chalk.yellow(`[SKIPPED] ${computedPath}`));
         continue;
       } else if (options.overwriteStrategy === OverwriteStrategy.Prompt) {
-        const response = await confirm({ message: `File already exists, overwrite? (${computedPath})` });
-        if (response === false) continue;
+        const response = await confirm({ message: `Do you want to overwrite the file? (${computedPath})` });
+        if (response === false) {
+          log(chalk.yellow(`[SKIPPED] ${computedPath}`));
+          continue;
+        };
       } else if (
         options.overwriteStrategy === OverwriteStrategy.ThrowIfExisting
       ) {
@@ -54,6 +64,10 @@ export async function generateFiles(
           `Generated file already exists, not allowed by overwrite strategy in generator (${computedPath})`
         );
       }
+
+      log(chalk.yellow(`[OVERWRITTEN] ${computedPath}`));
+    } else {
+      log(chalk.green(`[CREATED] ${computedPath}`));
     }
 
     const newFileContent = render(filePath, substitutions);
@@ -68,20 +82,30 @@ function computePath(
   target: string,
   remaps: { [k: string]: string } | undefined,
   filePath: string,
-  substitutions: { [k: string]: any }
+  substitutions: Record<string, string | number>
 ): string {
-  let computedPath = path.relative(srcFolder, filePath);
-
-  if (computedPath.endsWith('.mustache')) {
-    computedPath = computedPath.substring(0, computedPath.length - 9);
+  if (!path.isAbsolute(srcFolder)) {
+    throw new Error('Source folder must be an absolute path');
   }
 
-  if (remaps && remaps[computedPath]) {
+  let computedPath = path.relative(srcFolder, filePath);
+
+  if (remaps?.[computedPath]) {
     computedPath = remaps[computedPath];
   }
 
-  Object.entries(substitutions).forEach(([propertyName, value]) => {
-    computedPath = computedPath.split(`__${propertyName}__`).join(value);
+  if (computedPath.endsWith(MUSTACHE_EXTENSION)) {
+    computedPath = computedPath.slice(0, -MUSTACHE_EXTENSION.length);
+  }
+
+  computedPath = computedPath.replace(SUBSTITUTION_PATTERN, (_match, key) => {
+    const value = substitutions[key];
+
+    if (value === undefined) {
+      throw new Error(`Missing substitution value for key: ${key}`);
+    }
+
+    return String(value);
   });
 
   return path.join(target, computedPath);

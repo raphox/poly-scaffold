@@ -3,7 +3,7 @@ import * as mustache from 'mustache';
 import * as path from 'path';
 import * as glob from 'glob';
 
-import { Framework, FrameworkTemplate } from '../types';
+import { Framework, FrameworkTemplate } from '@/types';
 
 import FRAMEWORKS from './options';
 import GENERATORS from './generators';
@@ -28,15 +28,15 @@ function initFramework(name: string): Framework {
 }
 
 function getTemplates(folder: string) {
-  const templatesPath = path.join(__dirname, '..', 'templates', folder);
+  const templatesPath = path.join(__dirname, folder, 'templates');
 
   return glob
     .sync(`${templatesPath}/**/*.mustache`, { dot: true })
     .reduce((acc: FrameworkTemplate, template) => {
       const parts = template.split('/');
       const index = parts.indexOf(folder);
-      const relativePath = parts.slice(index + 1, -1).join('/') || 'others';
-      const fileName = parts[parts.length - 1].split('.')[0] || parts[parts.length - 1].replace('.mustache', '');
+      const relativePath = parts.slice(index + 2, -1).join('/') || 'others';
+      const fileName = parts[parts.length - 1].slice(0, -9);
 
       acc[relativePath] ??= {};
       acc[relativePath][fileName] = template;

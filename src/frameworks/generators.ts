@@ -1,4 +1,4 @@
-import { FrameworkGenerator } from '../types';
+import { FrameworkGenerator } from '@/types';
 
 import { generator as nextGenerator } from './next';
 import { generator as nuxtGenerator } from './nuxt';

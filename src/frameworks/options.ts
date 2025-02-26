@@ -1,4 +1,4 @@
-import { FrameworkOption } from "../types";
+import { FrameworkOption } from "@/types";
 
 const FRAMEWORKS: Record<string, FrameworkOption> = {
   next: {

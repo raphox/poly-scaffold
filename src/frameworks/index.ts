@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as glob from 'glob';
 
 import { Framework, FrameworkTemplate } from '@/types';
+import { MUSTACHE_EXTENSION } from '@/lib/generate-files';
 
 import FRAMEWORKS from './options';
 import GENERATORS from './generators';
@@ -31,12 +32,12 @@ function getTemplates(folder: string) {
   const templatesPath = path.join(__dirname, folder, 'templates');
 
   return glob
-    .sync(`${templatesPath}/**/*.mustache`, { dot: true })
+    .sync(`${templatesPath}/**/*${MUSTACHE_EXTENSION}`, { dot: true })
     .reduce((acc: FrameworkTemplate, template) => {
       const parts = template.split('/');
       const index = parts.indexOf(folder);
       const relativePath = parts.slice(index + 2, -1).join('/') || 'others';
-      const fileName = parts[parts.length - 1].slice(0, -9);
+      const fileName = parts[parts.length - 1].slice(0, -MUSTACHE_EXTENSION.length);
 
       acc[relativePath] ??= {};
       acc[relativePath][fileName] = template;

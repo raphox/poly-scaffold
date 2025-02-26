@@ -6,8 +6,8 @@ import chalk from 'chalk';
 
 debug.enable('generator');
 
-const MUSTACHE_EXTENSION = '.mustache';
 const SUBSTITUTION_PATTERN = /__([^_]+)__/g;
+export const MUSTACHE_EXTENSION = '.mustache';
 
 const log = debug('generator');
 

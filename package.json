@@ -1,35 +1,45 @@
 {
   "name": "poly-scaffold",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Node package to generate scaffold for CRUD features in different frameworks",
   "main": "index.js",
+  "bin": {
+    "pscaffold": "./dist/bin/cli.js"
+  },
   "scripts": {
     "build": "tsc && tsc-alias && npm run build:templates",
     "build:templates": "rm -rf dist/frameworks/*/templates && cpx 'src/frameworks/*/templates/**/*' dist/frameworks --clean",
     "pretest": "npm run build",
     "scaffold": "npm run build && node dist/scaffold.js",
-    "test": "mocha"
+    "test": "mocha",
+    "start": "node ./dist/bin/cli.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "scaffold",
+    "CRUD",
+    "Next.js",
+    "Nuxt.js"
+  ],
+  "author": "Raphael A. Araujo <raphox.araujo@gmail.com>",
+  "license": "MIT",
   "packageManager": "pnpm@10.5.0",
   "dependencies": {
     "@inquirer/prompts": "^7.3.2",
     "chalk": "^4.1.2",
     "debug": "^4.4.0",
+    "ejs": "^3.1.10",
     "fs": "0.0.1-security",
     "glob": "^11.0.1",
+    "handlebars": "^4.7.8",
     "inflection": "^3.0.2",
-    "mustache": "^4.2.0",
     "yargs": "^17.7.2",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@inquirer/testing": "^2.1.44",
     "@types/debug": "^4.1.12",
+    "@types/ejs": "^3.1.5",
     "@types/mocha": "^10.0.10",
-    "@types/mustache": "^4.2.5",
     "@types/node": "^22.13.4",
     "@types/yargs": "^17.0.33",
     "cpx": "^1.5.0",

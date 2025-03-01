@@ -1,0 +1,65 @@
+import React from "react";
+
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { api } from "@/services";
+import { FormProvider } from "@/providers";
+<% if (isTypescript) { %>import { Props as <%= resourceNames.classify %>Props } from "@/components/<%= resource %>";<% } %>
+import <%= resourceNames.classify %>Form, { resolver } from "@/components/<%= resource %>-form";
+
+export default function <%= resourceNames.classify %>EditPage() {
+  const params = useParams();
+  const queryClient = useQueryClient();
+  const <%= resource %>Id = params?.id;
+
+  const {
+    isPending: isUpdating,
+    isSuccess,
+    mutateAsync,
+  } = useMutation({
+    mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.put(`/<%= resourceNames.plural %>/${<%= resourceNames.camelize %>Id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["<%= resourceNames.plural %>"] });
+    },
+  });
+
+  const { isPending, error, data } = useQuery<% if (isTypescript) { %><<%= resourceNames.classify %>Props><% } %>({
+    queryFn: () => api.get(`/<%= resourceNames.plural %>/${<%= resourceNames.camelize %>Id}`).then((res) => res.data),
+    queryKey: ["<%= resourceNames.plural %>", <%= resource %>Id],
+    enabled: !!<%= resource %>Id,
+  });
+
+  if (isPending) {
+    return "Loading...";
+  } else if (error) {
+    return "An error has occurred: " + error.message;
+  }
+
+  return (
+    <>
+      {isSuccess && <p style={{ color: "green" }}>Updated with success.</p>}
+
+      <h1>Editing <%= resource %></h1>
+
+      <FormProvider resolver={resolver} values={data} onSubmit={mutateAsync}>
+        <<%= resourceNames.classify %>Form />
+
+        <div>
+          <button disabled={isUpdating} type="submit">
+            Update
+          </button>
+        </div>
+      </FormProvider>
+
+      <br />
+
+      <div>
+        <Link href={`/<%= resourceNames.plural %>/${<%= resourceNames.camelize %>Id}`}>Show this <%= resource %></Link>
+        {" | "}
+        <Link href="/<%= resourceNames.plural %>">Back to <%= resourceNames.plural %></Link>
+      </div>
+    </>
+  );
+}

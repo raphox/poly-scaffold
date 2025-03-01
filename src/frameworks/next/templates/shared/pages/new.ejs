@@ -1,0 +1,48 @@
+import React from "react";
+
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { api } from "@/services";
+import { FormProvider } from "@/providers";
+<% if (isTypescript) { %>import { Props as <%= resourceNames.classify %>Props } from "@/components/<%= resource %>";<% } %>
+import <%= resourceNames.classify %>Form, { resolver } from "@/components/<%= resource %>-form";
+
+export default function <%= resourceNames.classify %>NewPage() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const { isPending: isCreating, mutateAsync } = useMutation({
+    mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.post("/<%= resourceNames.plural %>", data),
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({ queryKey: ["<%= resourceNames.plural %>"] });
+      router.push({
+        pathname: `/<%= resourceNames.plural %>/${data.id}`,
+        query: { notice: "Created with success." },
+      });
+    },
+  });
+
+  return (
+    <>
+      <h1>New <%= resource %></h1>
+
+      <FormProvider resolver={resolver} values={{}} onSubmit={mutateAsync}>
+        <<%= resourceNames.classify %>Form />
+
+        <div>
+          <button disabled={isCreating} type="submit">
+            Create
+          </button>
+        </div>
+      </FormProvider>
+
+      <br />
+
+      <div>
+        <Link href="/<%= resourceNames.plural %>">Back to <%= resourceNames.plural %></Link>
+      </div>
+    </>
+  );
+}

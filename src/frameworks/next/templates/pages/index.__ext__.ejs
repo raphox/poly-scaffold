@@ -1,0 +1,12 @@
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+export default function HomePage() {
+  const { push } = useRouter();
+
+  useEffect(() => {
+    push("/<%= resourceNames.plural %>");
+  }, []);
+
+  return <p>Loading...</p>;
+}

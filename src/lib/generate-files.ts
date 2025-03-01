@@ -1,14 +1,13 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { confirm } from '@inquirer/prompts';
 import debug from 'debug';
 import chalk from 'chalk';
-
-debug.enable('generator');
+import { confirm } from '@inquirer/prompts';
 
 const SUBSTITUTION_PATTERN = /__([^_]+)__/g;
-export const MUSTACHE_EXTENSION = '.mustache';
+export const TEMPLATE_EXTENSION = '.ejs';
 
+debug.enable('generator');
 const log = debug('generator');
 
 export enum OverwriteStrategy {
@@ -82,7 +81,7 @@ function computePath(
   target: string,
   remaps: { [k: string]: string } | undefined,
   filePath: string,
-  substitutions: Record<string, string | number>
+  substitutions: Record<string, string>
 ): string {
   if (!path.isAbsolute(srcFolder)) {
     throw new Error('Source folder must be an absolute path');
@@ -94,8 +93,8 @@ function computePath(
     computedPath = remaps[computedPath];
   }
 
-  if (computedPath.endsWith(MUSTACHE_EXTENSION)) {
-    computedPath = computedPath.slice(0, -MUSTACHE_EXTENSION.length);
+  if (computedPath.endsWith(TEMPLATE_EXTENSION)) {
+    computedPath = computedPath.slice(0, -TEMPLATE_EXTENSION.length);
   }
 
   computedPath = computedPath.replace(SUBSTITUTION_PATTERN, (_match, key) => {

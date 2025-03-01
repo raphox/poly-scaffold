@@ -1,0 +1,45 @@
+import React from "react";
+
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+
+import { api } from "@/services";
+import <%= resourceNames.classify %><% if (isTypescript) { %>, { Props as <%= resourceNames.classify %>Props }<% } %> from "@/components/<%= resource %>";
+
+export default function <%= resourceNames.classify %>Page() {
+  const searchParams = useSearchParams();
+  const notice = searchParams.get("notice");
+
+  const { isPending, error, data } = useQuery<% if (isTypescript) { %><<%= resourceNames.classify %>Props[]><% } %>({
+    queryFn: () => api.get("/<%= resourceNames.plural %>").then((res) => res.data),
+    queryKey: ["<%= resourceNames.plural %>"],
+  });
+
+  if (isPending) {
+    return "Loading...";
+  } else if (error) {
+    return "An error has occurred: " + error.message;
+  }
+
+  return (
+    <>
+      {notice && <p style={{ color: "green" }}>{notice}</p>}
+
+      <h1><%= resourceNames.plural %></h1>
+
+      <div id="<%= resourceNames.plural %>">
+        {data.map((<%= resource %>) => (
+          <div key={<%= resource %>.id} id={`<%= resource %>_${<%= resource %>.id}`}>
+            <<%= resourceNames.classify %> {...<%= resource %>} />
+            <p>
+              <Link href={`/<%= resourceNames.plural %>/${<%= resource %>.id}`}>Show this <%= resource %></Link>
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <Link href={`/<%= resourceNames.plural %>/new`}>New <%= resource %></Link>
+    </>
+  );
+}

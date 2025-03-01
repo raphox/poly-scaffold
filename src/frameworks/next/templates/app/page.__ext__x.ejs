@@ -5,8 +5,8 @@ export default function HomePage() {
   const { push } = useRouter();
 
   useEffect(() => {
-    push("/<%= resourceNames.plural %>");
+    push("/<%= resources %>");
   }, []);
 
   return <p>Loading...</p>;
-}
+};

@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
+import * as prettier from "prettier";
 import debug from 'debug';
 import chalk from 'chalk';
 import { confirm } from '@inquirer/prompts';
@@ -70,9 +71,10 @@ export async function generateFiles(
     }
 
     const newFileContent = render(filePath, substitutions);
+    const formattedContent = await prettier.format(newFileContent, { parser: 'typescript' });
 
     fs.mkdirSync(path.dirname(computedPath), { recursive: true });
-    fs.writeFileSync(computedPath, newFileContent);
+    fs.writeFileSync(computedPath, formattedContent);
   };
 }
 

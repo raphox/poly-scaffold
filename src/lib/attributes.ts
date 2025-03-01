@@ -122,10 +122,9 @@ export function parseAndValidateArgs(args: ScaffoldSchema) {
       return { name, type };
     });
 
-    return CommandArgsSchema.parse({
-      resourceName: transform(resourceName, ['underscore', 'singularize']),
-      attributes,
-    });
+    return CommandArgsSchema
+      .parse({ resourceName, attributes })
+      .attributes;
   } catch (error) {
     if (error instanceof z.ZodError) {
       error.errors.forEach((err) => {

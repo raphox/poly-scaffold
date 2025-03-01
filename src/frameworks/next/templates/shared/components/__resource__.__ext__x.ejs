@@ -12,9 +12,9 @@ export interface Props {
 export default function <%= resourceNames.classify %>(props<% if (isTypescript) { %>: Props<% } %>) {
   return (
     <>
-    <%_ attributes.forEach(function({ name, type}) { _%>
+    <%_ attributes.forEach(function({ name, type }) { _%>
       <p>
-        <b><%= resource %>:</b> {props.<%= resource %>}
+        <b><%= resource %>:</b> {props.<%= name %>}
       </p>
     <%_ }) _%>
     </>

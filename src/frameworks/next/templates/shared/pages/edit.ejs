@@ -1,5 +1,4 @@
 import React from "react";
-
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -19,15 +18,15 @@ export default function <%= resourceNames.classify %>EditPage() {
     isSuccess,
     mutateAsync,
   } = useMutation({
-    mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.put(`/<%= resourceNames.plural %>/${<%= resourceNames.camelize %>Id}`, data),
+    mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.put(`/<%= resources %>/${<%= resourceNames.camelize %>Id}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["<%= resourceNames.plural %>"] });
+      queryClient.invalidateQueries({ queryKey: ["<%= resources %>"] });
     },
   });
 
   const { isPending, error, data } = useQuery<% if (isTypescript) { %><<%= resourceNames.classify %>Props><% } %>({
-    queryFn: () => api.get(`/<%= resourceNames.plural %>/${<%= resourceNames.camelize %>Id}`).then((res) => res.data),
-    queryKey: ["<%= resourceNames.plural %>", <%= resource %>Id],
+    queryFn: () => api.get(`/<%= resources %>/${<%= resourceNames.camelize %>Id}`).then((res) => res.data),
+    queryKey: ["<%= resources %>", <%= resource %>Id],
     enabled: !!<%= resource %>Id,
   });
 
@@ -56,9 +55,9 @@ export default function <%= resourceNames.classify %>EditPage() {
       <br />
 
       <div>
-        <Link href={`/<%= resourceNames.plural %>/${<%= resourceNames.camelize %>Id}`}>Show this <%= resource %></Link>
+        <Link href={`/<%= resources %>/${<%= resourceNames.camelize %>Id}`}>Show this <%= resource %></Link>
         {" | "}
-        <Link href="/<%= resourceNames.plural %>">Back to <%= resourceNames.plural %></Link>
+        <Link href="/<%= resources %>">Back to <%= resources %></Link>
       </div>
     </>
   );

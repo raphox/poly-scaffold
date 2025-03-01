@@ -45,6 +45,7 @@ const parseArgs = () => {
       description: 'Target path for generated files'
     })
     .option('javascript', {
+      alias: 'js',
       type: 'boolean',
       default: false,
       description: 'Generate JavaScript files instead of TypeScript'
@@ -94,7 +95,7 @@ export async function main() {
     validate: (value) => value.trim() ? true : 'Target path cannot be empty'
   });
 
-  const { resourceName, attributes } = parseAndValidateArgs({
+  const attributes = parseAndValidateArgs({
     ...args,
     framework,
     resource,
@@ -103,7 +104,7 @@ export async function main() {
   const options = normalizeOptions({
     ...args,
     framework,
-    resource: resourceName,
+    resource,
     attributes
   });
 

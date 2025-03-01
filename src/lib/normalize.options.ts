@@ -4,12 +4,13 @@ import { ScaffoldSchema, NormalizedScaffoldSchema } from '@/types';
 
 export default function normalizeOptions(options: ScaffoldSchema): NormalizedScaffoldSchema {
   const { framework, attributes, javascript } = options;
-  const resource = inflection.dasherize(options.resource);
+  const resource = inflection.transform(options.resource, ['singularize', 'dasherize']);
 
   return {
+    attributes,
     framework,
     resource,
-    attributes,
+    resources: inflection.pluralize(resource),
     isTypescript: !javascript,
     ext: javascript ? 'js' : 'ts',
     resourceNames: {

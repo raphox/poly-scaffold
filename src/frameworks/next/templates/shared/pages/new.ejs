@@ -1,5 +1,4 @@
 import React from "react";
-
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,11 +13,11 @@ export default function <%= resourceNames.classify %>NewPage() {
   const queryClient = useQueryClient();
 
   const { isPending: isCreating, mutateAsync } = useMutation({
-    mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.post("/<%= resourceNames.plural %>", data),
+    mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.post("/<%= resources %>", data),
     onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({ queryKey: ["<%= resourceNames.plural %>"] });
+      queryClient.invalidateQueries({ queryKey: ["<%= resources %>"] });
       router.push({
-        pathname: `/<%= resourceNames.plural %>/${data.id}`,
+        pathname: `/<%= resources %>/${data.id}`,
         query: { notice: "Created with success." },
       });
     },
@@ -41,7 +40,7 @@ export default function <%= resourceNames.classify %>NewPage() {
       <br />
 
       <div>
-        <Link href="/<%= resourceNames.plural %>">Back to <%= resourceNames.plural %></Link>
+        <Link href="/<%= resources %>">Back to <%= resources %></Link>
       </div>
     </>
   );

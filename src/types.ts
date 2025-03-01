@@ -26,6 +26,7 @@ export interface ScaffoldSchema {
 }
 
 export interface NormalizedScaffoldSchema extends ScaffoldSchema {
+  resources: string;
   isTypescript: boolean;
   ext: 'ts' | 'js' | 'tsx' | 'jsx';
   resourceNames: {

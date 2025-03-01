@@ -13,6 +13,7 @@ interface ScaffoldOptions {
   resource: string;
   target: string;
   javascript: boolean;
+  templatesPath: string;
   _: string[];
 }
 
@@ -49,6 +50,11 @@ const parseArgs = () => {
       type: 'boolean',
       default: false,
       description: 'Generate JavaScript files instead of TypeScript'
+    })
+    .option('templatesPath', {
+      alias: 'tp',
+      type: 'string',
+      description: 'Path to the templates folder'
     })
     .parseSync() as ScaffoldOptions;
 
@@ -109,7 +115,7 @@ export async function main() {
   });
 
   // Initialize the selected framework and generate the scaffold
-  const frameworkInstance = initFramework(framework);
+  const frameworkInstance = initFramework(framework, args.templatesPath);
   await frameworkInstance.generate(target, options);
 
   console.info('✨ Scaffold generated successfully!');

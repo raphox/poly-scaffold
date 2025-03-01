@@ -25,9 +25,9 @@ const helpers = {
   mapZodType: (type: keyof typeof MAPPED_ZOD_TYPES) => MAPPED_ZOD_TYPES[type] || type,
 };
 
-function initFramework(name: string): Framework {
+function initFramework(name: string, templatesPath?: string): Framework {
   const { title, folder } = FRAMEWORKS[name];
-  const templates = getTemplates(folder);
+  const templates = getTemplates(templatesPath ?? path.join(__dirname, folder, 'templates'));
 
   return {
     title,
@@ -47,15 +47,13 @@ function initFramework(name: string): Framework {
   };
 }
 
-function getTemplates(folder: string) {
-  const templatesPath = path.join(__dirname, folder, 'templates');
-
+function getTemplates(templatesPath: string) {
   return glob
     .sync(`${templatesPath}/**/*${TEMPLATE_EXTENSION}`, { dot: true })
     .reduce((acc: FrameworkTemplate, template) => {
       const parts = template.split('/');
-      const index = parts.indexOf(folder);
-      const relativePath = parts.slice(index + 2, -1).join('/') || 'others';
+      const index = parts.indexOf('templates');
+      const relativePath = parts.slice(index + 1, -1).join('/') || 'others';
       const fileName = parts[parts.length - 1].slice(0, -TEMPLATE_EXTENSION.length);
 
       acc[relativePath] ??= {};

@@ -20,14 +20,18 @@ node src/scaffold.js
 
 ### Command Line Options
 
-- `--framework, -f`: Framework to use for scaffolding.
-- `--resource, -r`: Resource name to scaffold.
-- `--target, -t`: Target path for generated files.
+- `--help`: Show help [boolean]
+- `--version`: Show version number [boolean]
+- `--framework, -f`: Framework to use for scaffolding [string]
+- `--resource, -r`: Resource name to scaffold [string]
+- `--target, -t`: Target path for generated files [string]
+- `--javascript, --js`: Generate JavaScript files instead of TypeScript [boolean] [default: false]
+- `--templatesPath, --tp`: Specify a custom template path. Leave blank to use the default templates for the selected framework [string]
 
 ### Example
 
 ```bash
-node src/scaffold.js --framework react --resource User --target ./output
+pscaffold next post title:string description:text -t ./
 ```
 
 ## Development

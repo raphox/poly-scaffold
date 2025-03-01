@@ -45,9 +45,9 @@ export const generator = async function (framework: Framework, target: string, o
     await generateFiles({
       remaps: {
         'list.ejs': '__resources__/index.__ext__x.ejs',
-        'new.ejs': '__resources__/new/index.__ext__x.ejs',
+        'new.ejs': '__resources__/new.__ext__x.ejs',
         'show.ejs': '__resources__/[id]/index.__ext__x.ejs',
-        'edit.ejs': '__resources__/[id]/edit/index.__ext__x.ejs',
+        'edit.ejs': '__resources__/[id]/edit.__ext__x.ejs',
       },
       files: Object.values(templates['shared/pages']),
       target: `${srcPath}/pages`,

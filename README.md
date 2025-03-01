@@ -44,12 +44,10 @@ pscaffold next post title:string description:text -t ./
 │   ├── index.tsx
 │   └── posts
 │       ├── [id]
-│       │   ├── edit
-│       │   │   └── index.tsx
+│       │   ├── edit.tsx
 │       │   └── index.tsx
 │       ├── index.tsx
-│       └── new
-│           └── index.tsx
+│       └── new.tsx
 ├── providers.tsx
 └── services.ts
 ```

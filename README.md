@@ -32,7 +32,29 @@ node src/scaffold.js
 
 ```bash
 pscaffold next post title:string description:text -t ./
+
+# Result:
+
+├── components
+│   ├── post-form.tsx
+│   └── post.tsx
+├── pages
+│   ├── _app.tsx
+│   ├── _document.tsx
+│   ├── index.tsx
+│   └── posts
+│       ├── [id]
+│       │   ├── edit
+│       │   │   └── index.tsx
+│       │   └── index.tsx
+│       ├── index.tsx
+│       └── new
+│           └── index.tsx
+├── providers.tsx
+└── services.ts
 ```
+
+Sample of generated code: [docs/sample/src](docs/sample/src).
 
 ## Development
 

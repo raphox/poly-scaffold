@@ -9,7 +9,9 @@ const schema = z.object({
   <%_ }) _%>
 });
 
+<% if (isTypescript) { %>
 type FormData = z.infer<typeof schema>;
+<% } %>
 
 export const resolver = zodResolver(schema);
 
@@ -17,7 +19,7 @@ export default function <%= resourceNames.classify %>Form() {
   const {
     register,
     formState: { errors },
-  } = useFormContext<FormData>();
+  } = useFormContext<% if (isTypescript) { %><FormData><% } %>();
 
   return (
     <>

@@ -25,7 +25,7 @@ export default function PostPage() {
     <>
       {notice && <p style={{ color: "green" }}>{notice}</p>}
 
-      <h1>posts</h1>
+      <h1>Posts</h1>
 
       <div id="posts">
         {data.map((post) => (

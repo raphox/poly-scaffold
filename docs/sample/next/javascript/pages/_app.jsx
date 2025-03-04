@@ -4,23 +4,13 @@ import { AppProps } from "next/app";
 
 import { AppProvider } from "@/providers";
 
-<% if (isTypescript) { %>
-export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode,
-};
-
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout,
-};
-<% } %>
-
-export default function MyApp({ Component, pageProps }<% if (isTypescript) { %>: AppPropsWithLayout<% } %>) {
+export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout || ((page) => page);
 
   return getLayout(
     <AppProvider>
       <Component {...pageProps} />
-    </AppProvider>
+    </AppProvider>,
   );
 }

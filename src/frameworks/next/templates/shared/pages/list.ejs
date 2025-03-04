@@ -25,7 +25,7 @@ export default function <%= resourceNames.classify %>Page() {
     <>
       {notice && <p style={{ color: "green" }}>{notice}</p>}
 
-      <h1><%= resources %></h1>
+      <h1><%= titleize(resources) %></h1>
 
       <div id="<%= resources %>">
         {data.map((<%= resource %>) => (

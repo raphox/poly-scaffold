@@ -14,7 +14,7 @@ export default function <%= resourceNames.classify %>(props<% if (isTypescript) 
     <>
     <%_ attributes.forEach(function({ name, type }) { _%>
       <p>
-        <b><%= resource %>:</b> {props.<%= name %>}
+        <b><%= titleize(name) %>:</b> {props.<%= name %>}
       </p>
     <%_ }) _%>
     </>

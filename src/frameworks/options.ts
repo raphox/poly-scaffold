@@ -5,6 +5,10 @@ const FRAMEWORKS: Record<string, FrameworkOption> = {
     title: 'Next.js',
     folder: 'next',
   },
+  next_and_shadcn: {
+    title: 'Next.js + Shadcn/ui',
+    folder: 'next_and_shadcn',
+  },
   nuxt: {
     title: 'Nuxt.js',
     folder: 'nuxt',

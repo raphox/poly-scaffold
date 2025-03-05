@@ -1,0 +1,50 @@
+import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { api } from "@/services";
+import { FormProvider } from "@/providers";
+import { Button } from "@/components/ui/button";
+import Layout from "@/components/layout";
+<% if (isTypescript) { %>import { Props as <%= resourceNames.classify %>Props } from "@/components/<%= resource %>";<% } %>
+import <%= resourceNames.classify %>Form, { resolver } from "@/components/<%= resource %>-form";
+
+export default function <%= resourceNames.classify %>NewPage() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const { isPending: isCreating, mutateAsync } = useMutation({
+    mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.post("/<%= resources %>", data),
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({ queryKey: ["<%= resources %>"] });
+      router.push({
+        pathname: `/<%= resources %>/${data.id}`,
+        query: { notice: "Created with success." },
+      });
+    },
+  });
+
+  return (
+    <div className="prose mx-auto w-full lg:max-w-5xl">
+      <h1>New <%= resource %></h1>
+
+      <FormProvider resolver={resolver} values={{}} onSubmit={mutateAsync}>
+        <<%= resourceNames.classify %>Form />
+
+        <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+          <Link href="/<%= resources %>">
+            <Button variant="link">Back to <%= resources %></Button>
+          </Link>
+          <Button disabled={isCreating} type="submit">
+            Create
+          </Button>
+        </div>
+      </FormProvider>
+    </div>
+  );
+}
+
+<%= resourceNames.classify %>NewPage.getLayout = function getLayout(yeild: ReactNode) {
+  return <Layout>{yeild}</Layout>;
+};

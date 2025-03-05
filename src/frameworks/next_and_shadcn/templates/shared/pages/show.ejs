@@ -1,0 +1,70 @@
+import React from "react";
+import Link from "next/link";
+import { useRouter } from 'next/router';
+import { useParams, useSearchParams } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { api } from "@/services";
+import { Button } from "@/components/ui/button";
+import Layout from "@/components/layout";
+import <%= resourceNames.classify %><% if (isTypescript) { %>, { Props as <%= resourceNames.classify %>Props }<% } %> from "@/components/<%= resource %>";
+
+export default function <%= resourceNames.classify %>ShowPage() {
+  const router = useRouter();
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
+  const notice = searchParams.get("notice");
+  const <%= resource %>Id = params?.id;
+
+  const { isPending: isDeleting, mutate } = useMutation({
+    mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.delete(`/<%= resources %>/${<%= resourceNames.camelize %>Id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["<%= resources %>"] });
+      router.replace({
+        pathname: "/<%= resources %>",
+        query: { notice: "Removed with success." },
+      });
+    },
+  });
+
+  const { isPending, error, data } = useQuery<% if (isTypescript) { %><<%= resourceNames.classify %>Props><% } %>({
+    queryFn: () => api.get(`/<%= resources %>/${<%= resourceNames.camelize %>Id}`).then((res) => res.data),
+    queryKey: ["<%= resources %>", <%= resource %>Id],
+    enabled: !!<%= resource %>Id,
+  });
+
+  if (isPending) {
+    return "Loading...";
+  } else if (error) {
+    return "An error has occurred: " + (error<% if (isTypescript) { %> as Error<% } %>).message;
+  }
+
+  return (
+    <>
+      {notice && <p style={{ color: "green" }}>{notice}</p>}
+
+      <<%= resourceNames.classify %> {...data} />
+
+      <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+        <Link href="/<%= resources %>">
+          <Button variant="link">Back to <%= resources %></Button>
+        </Link>
+        <Button
+          variant="destructive"
+          disabled={isDeleting}
+          onClick={() => mutate()}
+        >
+          Destroy this <%= resource %>
+        </Button>
+        <Link href={`/<%= resources %>/${<%= resourceNames.camelize %>Id}/edit`}>
+          <Button>Edit</Button>
+        </Link>
+      </div>
+    </>
+  );
+}
+
+<%= resourceNames.classify %>ShowPage.getLayout = function getLayout(yeild: ReactNode) {
+  return <Layout>{yeild}</Layout>;
+};

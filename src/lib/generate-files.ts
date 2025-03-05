@@ -20,12 +20,35 @@ export enum OverwriteStrategy {
 
 export interface GenerateFilesOptions {
   overwriteStrategy?: OverwriteStrategy;
+  parser?: 'typescript' | 'javascript' | 'json' | 'css';
+}
+
+async function handleOverwriteStrategy(filePath: string, options: GenerateFilesOptions) {
+  if (fs.existsSync(filePath)) {
+    if (options.overwriteStrategy === OverwriteStrategy.KeepExisting) {
+      log(chalk.yellow(`[SKIPPED] ${filePath}`));
+
+      return false;
+    } else if (options.overwriteStrategy === OverwriteStrategy.Prompt) {
+      const response = await confirm({ message: `Do you want to overwrite the file? (${filePath})` });
+
+      if (response === false) {
+        log(chalk.yellow(`[SKIPPED] ${filePath}`));
+
+        return false;
+      };
+    } else if (options.overwriteStrategy === OverwriteStrategy.ThrowIfExisting) {
+      throw new Error(
+        `Generated file already exists, not allowed by overwrite strategy in generator (${filePath})`
+      );
+    }
+  }
 }
 
 export async function generateFiles(
   {
     files, target, remaps, substitutions, render,
-    options = { overwriteStrategy: OverwriteStrategy.Overwrite }
+    options = { overwriteStrategy: OverwriteStrategy.Overwrite, parser: 'typescript' }
   }:
     {
       files: string[],
@@ -47,35 +70,48 @@ export async function generateFiles(
       substitutions
     );
 
-    if (fs.existsSync(computedPath)) {
-      if (options.overwriteStrategy === OverwriteStrategy.KeepExisting) {
-        log(chalk.yellow(`[SKIPPED] ${computedPath}`));
-        continue;
-      } else if (options.overwriteStrategy === OverwriteStrategy.Prompt) {
-        const response = await confirm({ message: `Do you want to overwrite the file? (${computedPath})` });
-        if (response === false) {
-          log(chalk.yellow(`[SKIPPED] ${computedPath}`));
-          continue;
-        };
-      } else if (
-        options.overwriteStrategy === OverwriteStrategy.ThrowIfExisting
-      ) {
-        throw new Error(
-          `Generated file already exists, not allowed by overwrite strategy in generator (${computedPath})`
-        );
-      }
+    const newFileContent = render(filePath, substitutions);
+    const formattedContent = await prettier.format(newFileContent, { parser: options.parser || 'typescript' });
 
-      log(chalk.yellow(`[OVERWRITTEN] ${computedPath}`));
+    if (fs.existsSync(computedPath)) {
+      const existingContent = fs.readFileSync(computedPath, 'utf-8');
+
+      if (existingContent === formattedContent) {
+        log(chalk.blue(`[SAME] ${computedPath}`));
+
+        continue;
+      }
+    }
+
+    if (await handleOverwriteStrategy(computedPath, options) === false) {
+      continue;
     } else {
       log(chalk.green(`[CREATED] ${computedPath}`));
     }
 
-    const newFileContent = render(filePath, substitutions);
-    const formattedContent = await prettier.format(newFileContent, { parser: 'typescript' });
-
     fs.mkdirSync(path.dirname(computedPath), { recursive: true });
     fs.writeFileSync(computedPath, formattedContent);
   };
+}
+
+export async function overwriteFile(filePath: string, content: string, options: GenerateFilesOptions = { overwriteStrategy: OverwriteStrategy.Overwrite, parser: 'typescript' }) {
+  const formattedContent = await prettier.format(content, { parser: options.parser || 'typescript' });
+
+  if (fs.existsSync(filePath)) {
+    const existingContent = fs.readFileSync(filePath, 'utf-8');
+
+    if (existingContent === formattedContent) {
+      log(chalk.blue(`[SAME] ${filePath}`));
+
+      return;
+    }
+  }
+
+  if (await handleOverwriteStrategy(filePath, options) === false) {
+    return;
+  }
+
+  fs.writeFileSync(filePath, formattedContent);
 }
 
 function computePath(

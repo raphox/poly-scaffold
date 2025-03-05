@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useParams, useSearchParams } from "next/navigation";
@@ -18,7 +18,7 @@ export default function PostShowPage() {
   const postId = params?.id;
 
   const { isPending: isDeleting, mutate } = useMutation({
-    mutationFn: (data: PostProps) => api.delete(`/posts/${postId}`, data),
+    mutationFn: () => api.delete(`/posts/${postId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       router.replace({
@@ -41,8 +41,10 @@ export default function PostShowPage() {
   }
 
   return (
-    <>
+    <div className="prose mx-auto w-full lg:max-w-5xl">
       {notice && <p style={{ color: "green" }}>{notice}</p>}
+
+      <h1>Post</h1>
 
       <Post {...data} />
 
@@ -61,7 +63,7 @@ export default function PostShowPage() {
           <Button>Edit</Button>
         </Link>
       </div>
-    </>
+    </div>
   );
 }
 

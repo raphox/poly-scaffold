@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useParams, useSearchParams } from "next/navigation";
@@ -18,7 +18,7 @@ export default function <%= resourceNames.classify %>ShowPage() {
   const <%= resource %>Id = params?.id;
 
   const { isPending: isDeleting, mutate } = useMutation({
-    mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.delete(`/<%= resources %>/${<%= resourceNames.camelize %>Id}`, data),
+    mutationFn: () => api.delete(`/<%= resources %>/${<%= resourceNames.camelize %>Id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["<%= resources %>"] });
       router.replace({
@@ -41,8 +41,10 @@ export default function <%= resourceNames.classify %>ShowPage() {
   }
 
   return (
-    <>
+    <div className="prose mx-auto w-full lg:max-w-5xl">
       {notice && <p style={{ color: "green" }}>{notice}</p>}
+
+      <h1><%= resourceNames.titleize %></h1>
 
       <<%= resourceNames.classify %> {...data} />
 
@@ -61,7 +63,7 @@ export default function <%= resourceNames.classify %>ShowPage() {
           <Button>Edit</Button>
         </Link>
       </div>
-    </>
+    </div>
   );
 }
 

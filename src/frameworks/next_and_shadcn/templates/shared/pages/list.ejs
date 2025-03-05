@@ -1,5 +1,6 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Link from "next/link";
+import { Eye } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
@@ -40,6 +41,7 @@ export default function <%= resourceNames.classify %>Page() {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>ID</TableHead>
             <%_ attributes.forEach(function({ name, type }) { _%>
             <TableHead><%= name %></TableHead>
             <%_ }) _%>

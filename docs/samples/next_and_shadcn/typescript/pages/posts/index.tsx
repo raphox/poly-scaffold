@@ -1,5 +1,6 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Link from "next/link";
+import { Eye } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
@@ -40,6 +41,7 @@ export default function PostPage() {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>ID</TableHead>
             <TableHead>title</TableHead>
             <TableHead>description</TableHead>
             <TableHead className="text-right">Actions</TableHead>

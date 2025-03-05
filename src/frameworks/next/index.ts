@@ -62,7 +62,7 @@ export const generator = async function (framework: Framework, target: string, o
     target: `${srcPath}/components`,
     substitutions: options,
     render: framework.render,
-    options: { overwriteStrategy: OverwriteStrategy.Overwrite }
+    options: { overwriteStrategy: OverwriteStrategy.Prompt }
   });
 
   await generateFiles({

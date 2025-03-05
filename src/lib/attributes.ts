@@ -77,7 +77,7 @@ const COLUMN_TYPES = Object.keys(MAPPED_TYPES) as [string, ...string[]];
 import debug from 'debug';
 import chalk from 'chalk';
 
-debug.enable('parsing-args');
+// debug.enable('parsing-args');
 const log = debug('parsing-args');
 
 // Define schema for attribute validation

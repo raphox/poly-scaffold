@@ -77,7 +77,7 @@ export async function generateFiles(
       const existingContent = fs.readFileSync(computedPath, 'utf-8');
 
       if (existingContent === formattedContent) {
-        log(chalk.blue(`[SAME] ${computedPath}`));
+        log(chalk.blue(`[UNCHANGED] ${computedPath}`));
 
         continue;
       }
@@ -86,7 +86,11 @@ export async function generateFiles(
     if (await handleOverwriteStrategy(computedPath, options) === false) {
       continue;
     } else {
-      log(chalk.green(`[CREATED] ${computedPath}`));
+      if (fs.existsSync(computedPath)) {
+        log(chalk.yellow(`[OVERWRITTEN] ${computedPath}`));
+      } else {
+        log(chalk.green(`[CREATED] ${computedPath}`));
+      }
     }
 
     fs.mkdirSync(path.dirname(computedPath), { recursive: true });
@@ -101,7 +105,7 @@ export async function overwriteFile(filePath: string, content: string, options: 
     const existingContent = fs.readFileSync(filePath, 'utf-8');
 
     if (existingContent === formattedContent) {
-      log(chalk.blue(`[SAME] ${filePath}`));
+      log(chalk.blue(`[UNCHANGED] ${filePath}`));
 
       return;
     }
@@ -109,6 +113,12 @@ export async function overwriteFile(filePath: string, content: string, options: 
 
   if (await handleOverwriteStrategy(filePath, options) === false) {
     return;
+  } else {
+    if (fs.existsSync(filePath)) {
+      log(chalk.yellow(`[OVERWRITTEN] ${filePath}`));
+    } else {
+      log(chalk.green(`[CREATED] ${filePath}`));
+    }
   }
 
   fs.writeFileSync(filePath, formattedContent);

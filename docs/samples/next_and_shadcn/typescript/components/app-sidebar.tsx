@@ -27,7 +27,7 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "Posts",
+          title: "Post",
           url: "/posts",
         },
       ],

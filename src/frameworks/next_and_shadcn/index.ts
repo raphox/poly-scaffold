@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { generateFiles, overwriteFile, OverwriteStrategy } from "@/lib/generate-files";
 import { Framework } from "@/types";
 import { updateJson } from '@/lib/utils';
-import { getDependenciesVersionsToInstall } from './dependencies';
+import { getDependenciesVersionsToInstall, getDevDependenciesVersionsToInstall } from './dependencies';
 
 export const generator = async function (framework: Framework, target: string, options: any) {
   const templates = framework.templates;
@@ -62,6 +62,14 @@ export const generator = async function (framework: Framework, target: string, o
     target: `${srcPath}/components`,
     substitutions: options,
     render: framework.render,
+    options: { overwriteStrategy: OverwriteStrategy.Prompt }
+  });
+
+  await generateFiles({
+    files: Object.values(templates['shared/components/ui']),
+    target: `${srcPath}/components/ui`,
+    substitutions: options,
+    render: framework.render,
     options: { overwriteStrategy: OverwriteStrategy.Overwrite }
   });
 
@@ -74,10 +82,16 @@ export const generator = async function (framework: Framework, target: string, o
   });
 
   await generateFiles({
-    files:
-      Object.values(templates['shared/lib'])
-        .concat(Object.values(templates['shared/hooks'])),
-    target: srcPath,
+    files: Object.values(templates['shared/lib']),
+    target: `${srcPath}/lib`,
+    substitutions: options,
+    render: framework.render,
+    options: { overwriteStrategy: OverwriteStrategy.Prompt }
+  });
+
+  await generateFiles({
+    files: Object.values(templates['shared/hooks']),
+    target: `${srcPath}/hooks`,
     substitutions: options,
     render: framework.render,
     options: { overwriteStrategy: OverwriteStrategy.Prompt }
@@ -85,7 +99,7 @@ export const generator = async function (framework: Framework, target: string, o
 
   await generateFiles({
     files: Object.values(templates['styles']),
-    target: srcPath,
+    target: `${srcPath}/styles`,
     substitutions: options,
     render: framework.render,
     options: {
@@ -107,6 +121,10 @@ export const generator = async function (framework: Framework, target: string, o
     json.dependencies = {
       ...json.dependencies,
       ...getDependenciesVersionsToInstall()
+    };
+    json.devDependencies = {
+      ...json.devDependencies,
+      ...getDevDependenciesVersionsToInstall()
     };
 
     return json;

@@ -26,8 +26,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 }
 
-import { AxiosResponse } from "axios";
-
+import axios, { AxiosResponse } from "axios";
 import {
   useForm,
   FormProvider as FormProviderBase,
@@ -41,9 +40,9 @@ interface FormProviderProps {
   values: FieldValues;
   resolver: Resolver;
   onSubmit: UseMutateAsyncFunction<
-    AxiosResponse<any, any>,
+    AxiosResponse<any, any>, // eslint-disable-line @typescript-eslint/no-explicit-any
     Error,
-    any,
+    any, // eslint-disable-line @typescript-eslint/no-explicit-any
     unknown
   >;
 }
@@ -62,8 +61,8 @@ export function FormProvider({
   const handleSubmit = async (fields: FieldValues) => {
     try {
       await onSubmit(fields.data);
-    } catch (error: any) {
-      if (error.response?.status === 422) {
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.status === 422) {
         const serverError = error.response.data;
 
         for (const attribute in serverError) {

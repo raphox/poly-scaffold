@@ -6,7 +6,7 @@ export default function HomePage() {
 
   useEffect(() => {
     push("/posts");
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <p>Loading...</p>;
 }

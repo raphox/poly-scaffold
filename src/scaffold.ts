@@ -46,13 +46,13 @@ const parseArgs = () => {
       description: 'Target path for generated files'
     })
     .option('javascript', {
-      alias: 'js',
+      alias: 'j',
       type: 'boolean',
       default: false,
       description: 'Generate JavaScript files instead of TypeScript'
     })
     .option('templatesPath', {
-      alias: 'tp',
+      alias: 'p',
       type: 'string',
       description: 'Path to the templates folder'
     })

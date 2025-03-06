@@ -52,7 +52,7 @@ pscaffold next post title:string description:text -t ./
 └── services.ts
 ```
 
-Sample of generated code: [docs/sample/src](docs/sample/src).
+Sample of generated code: [docs/sample/src](docs/samples).
 
 ## Development
 

@@ -28,13 +28,12 @@ export default function PostForm() {
     <>
       <FormField
         control={control}
-        type="string"
         name="title"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Title:</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input type="string" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -42,13 +41,12 @@ export default function PostForm() {
       />
       <FormField
         control={control}
-        type="text"
         name="description"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Description:</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input type="text" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -15,15 +15,15 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout";
-<% if (isTypescript) { %>import { Props as <%= resourceNames.classify %>Props } from "@/components/<%= resource %>";<% } %>
+import { Props as PageProps } from "@/components/page";
 
-export default function <%= resourceNames.classify %>Page() {
+export default function PagePage() {
   const searchParams = useSearchParams();
   const notice = searchParams.get("notice");
 
-  const { isPending, error, data } = useQuery<% if (isTypescript) { %><<%= resourceNames.classify %>Props[]><% } %>({
-    queryFn: () => api.get("/<%= resources %>").then((res) => res.data),
-    queryKey: ["<%= resources %>"],
+  const { isPending, error, data } = useQuery<PageProps[]>({
+    queryFn: () => api.get("/pages").then((res) => res.data),
+    queryKey: ["pages"],
   });
 
   if (isPending) {
@@ -36,27 +36,27 @@ export default function <%= resourceNames.classify %>Page() {
     <div className="prose mx-auto w-full lg:max-w-5xl">
       {notice && <p style={{ color: "green" }}>{notice}</p>}
 
-      <h1><%= titleize(resources) %></h1>
+      <h1>Pages</h1>
 
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
-            <%_ attributes.forEach(function({ name, type }) { _%>
-            <TableHead><%= titleize(name) %></TableHead>
-            <%_ }) _%>
+            <TableHead>Title</TableHead>
+            <TableHead>Description</TableHead>
+            <TableHead>Content</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((<%= resource %>) => (
-            <TableRow key={<%= resource %>.id}>
-              <TableCell>{<%= resource %>.id}</TableCell>
-              <%_ attributes.forEach(function({ name, type }) { _%>
-              <TableCell>{<%= resource %>.<%= name %>}</TableCell>
-              <%_ }) _%>
+          {data.map((page) => (
+            <TableRow key={page.id}>
+              <TableCell>{page.id}</TableCell>
+              <TableCell>{page.title}</TableCell>
+              <TableCell>{page.description}</TableCell>
+              <TableCell>{page.content}</TableCell>
               <TableCell className="text-right">
-                <Link href={`/<%= resources %>/${<%= resource %>.id}`}>
+                <Link href={`/pages/${page.id}`}>
                   <Button size="sm" variant="ghost">
                     <Eye /> Show
                   </Button>
@@ -68,14 +68,14 @@ export default function <%= resourceNames.classify %>Page() {
       </Table>
 
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-        <Link href="/<%= resources %>/new">
-          <Button>New <%= resource %></Button>
+        <Link href="/pages/new">
+          <Button>New page</Button>
         </Link>
       </div>
     </div>
   );
 }
 
-<%= resourceNames.classify %>Page.getLayout = function getLayout(yeild: ReactNode) {
+PagePage.getLayout = function getLayout(yeild: ReactNode) {
   return <Layout>{yeild}</Layout>;
 };

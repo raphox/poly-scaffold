@@ -1,8 +1,12 @@
 import React, { ReactNode, useState } from "react";
-import { QueryClient, QueryClientProvider, <% if (isTypescript) { %>UseMutateAsyncFunction<% } %> } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  UseMutateAsyncFunction,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-export function AppProvider({ children }<% if (isTypescript) { %>: { children: ReactNode }<% } %>) {
+export function AppProvider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -11,7 +15,7 @@ export function AppProvider({ children }<% if (isTypescript) { %>: { children: R
             refetchOnWindowFocus: false,
           },
         },
-      })
+      }),
   );
 
   return (
@@ -22,18 +26,15 @@ export function AppProvider({ children }<% if (isTypescript) { %>: { children: R
   );
 }
 
-import axios<% if (isTypescript) { %>, { AxiosResponse }<% } %> from "axios";
+import axios, { AxiosResponse } from "axios";
 import {
   useForm,
   FormProvider as FormProviderBase,
   Form,
-<% if (isTypescript) { %>
   FieldValues,
   Resolver,
-<% } %>
 } from "react-hook-form";
 
-<% if (isTypescript) { %>
 interface FormProviderProps {
   children: ReactNode;
   values: FieldValues;
@@ -45,18 +46,22 @@ interface FormProviderProps {
     unknown
   >;
 }
-<% } %>
 
-export function FormProvider({ children, values, resolver, onSubmit }<% if (isTypescript) { %>: FormProviderProps<% } %>) {
+export function FormProvider({
+  children,
+  values,
+  resolver,
+  onSubmit,
+}: FormProviderProps) {
   const { setError, ...formProps } = useForm({
     defaultValues: values,
     resolver,
   });
 
-  const handleSubmit = async (fields<% if (isTypescript) { %>: FieldValues<% } %>) => {
+  const handleSubmit = async (fields: FieldValues) => {
     try {
       await onSubmit(fields.data);
-    } catch (error<% if (isTypescript) { %>: unknown<% } %>) {
+    } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response?.status === 422) {
         const serverError = error.response.data;
 

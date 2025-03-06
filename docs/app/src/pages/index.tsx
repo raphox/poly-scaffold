@@ -5,7 +5,7 @@ export default function HomePage() {
   const { push } = useRouter();
 
   useEffect(() => {
-    push("/<%= resources %>");
+    push("/pages");
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <p>Loading...</p>;

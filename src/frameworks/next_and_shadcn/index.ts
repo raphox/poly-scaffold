@@ -78,7 +78,7 @@ export const generator = async function (framework: Framework, target: string, o
     target: srcPath,
     substitutions: options,
     render: framework.render,
-    options: { overwriteStrategy: OverwriteStrategy.Overwrite }
+    options: { overwriteStrategy: OverwriteStrategy.Prompt }
   });
 
   await generateFiles({
@@ -108,7 +108,7 @@ export const generator = async function (framework: Framework, target: string, o
     }
   });
 
-  await overwriteFile(`${target}/postcss.config.mjs`, `
+  await overwriteFile(`${target}postcss.config.mjs`, `
     const config = {
       plugins: {
         "@tailwindcss/postcss": {},

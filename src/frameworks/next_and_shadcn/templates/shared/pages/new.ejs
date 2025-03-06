@@ -29,7 +29,15 @@ export default function <%= resourceNames.classify %>NewPage() {
     <div className="prose mx-auto w-full lg:max-w-5xl">
       <h1>New <%= resource %></h1>
 
-      <FormProvider resolver={resolver} values={{}} onSubmit={mutateAsync}>
+      <FormProvider
+        resolver={resolver}
+        values={{
+          <%_ attributes.forEach(function({ name, type }) { _%>
+          <%= name %>: "",
+          <%_ }) _%>
+        }}
+        onSubmit={mutateAsync}
+      >
         <<%= resourceNames.classify %>Form />
 
         <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">

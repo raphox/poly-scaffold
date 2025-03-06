@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout";
-import Post, { Props as PostProps } from "@/components/post";
+import { Props as PostProps } from "@/components/post";
 
 export default function PostPage() {
   const searchParams = useSearchParams();
@@ -42,8 +42,8 @@ export default function PostPage() {
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
-            <TableHead>title</TableHead>
-            <TableHead>description</TableHead>
+            <TableHead>Title</TableHead>
+            <TableHead>Description</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>

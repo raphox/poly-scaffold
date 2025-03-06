@@ -29,7 +29,14 @@ export default function PostNewPage() {
     <div className="prose mx-auto w-full lg:max-w-5xl">
       <h1>New post</h1>
 
-      <FormProvider resolver={resolver} values={{}} onSubmit={mutateAsync}>
+      <FormProvider
+        resolver={resolver}
+        values={{
+          title: "",
+          description: "",
+        }}
+        onSubmit={mutateAsync}
+      >
         <PostForm />
 
         <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">

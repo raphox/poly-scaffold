@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout";
-import <%= resourceNames.classify %><% if (isTypescript) { %>, { Props as <%= resourceNames.classify %>Props }<% } %> from "@/components/<%= resource %>";
+<% if (isTypescript) { %>import { Props as <%= resourceNames.classify %>Props } from "@/components/<%= resource %>";<% } %>
 
 export default function <%= resourceNames.classify %>Page() {
   const searchParams = useSearchParams();
@@ -43,7 +43,7 @@ export default function <%= resourceNames.classify %>Page() {
           <TableRow>
             <TableHead>ID</TableHead>
             <%_ attributes.forEach(function({ name, type }) { _%>
-            <TableHead><%= name %></TableHead>
+            <TableHead><%= titleize(name) %></TableHead>
             <%_ }) _%>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>

@@ -25,10 +25,26 @@ api.interceptors.request.use(
   },
 );
 
+import HomePage from './markdowns/README.md';
+import Frameworks from './markdowns/frameworks.md';
+import FrameworksNextJs from './markdowns/frameworks/nextjs.md';
+
 const defaultData = [
-  { title: 'Post 1', description: 'Description 1', content: 'Content 1' },
-  { title: 'Post 2', description: 'Description 2', content: 'Content 2' },
-  { title: 'Post 3', description: 'Description 3', content: 'Content 3' },
+  {
+    title: 'README.md',
+    description: 'Poly Scaffold is a command-line tool for generating scaffold code for various frameworks.',
+    content: HomePage,
+  },
+  {
+    title: 'frameworks.md',
+    description: 'Frameworks supported by Poly Scaffold.',
+    content: Frameworks,
+  },
+  {
+    title: 'frameworks/next.md',
+    description: 'Next.js is a React framework that enables server-side rendering and static site generation.',
+    content: FrameworksNextJs,
+  },
 ];
 
 function setupLocalDatabase() {

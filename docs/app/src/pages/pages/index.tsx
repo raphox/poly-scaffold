@@ -21,6 +21,13 @@ export default function PagePage() {
   const searchParams = useSearchParams();
   const notice = searchParams.get("notice");
 
+  const resetDataHandler = async () => {
+    if (window.confirm("Are you sure you want to reset to default data?")) {
+      await indexedDB.deleteDatabase("MyDatabase");
+      window.location.reload();
+    }
+  };
+
   const { isPending, error, data } = useQuery<PageProps[]>({
     queryFn: () => api.get("/pages").then((res) => res.data),
     queryKey: ["pages"],
@@ -44,7 +51,6 @@ export default function PagePage() {
             <TableHead>ID</TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Description</TableHead>
-            <TableHead>Content</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -54,7 +60,6 @@ export default function PagePage() {
               <TableCell>{page.id}</TableCell>
               <TableCell>{page.title}</TableCell>
               <TableCell>{page.description}</TableCell>
-              <TableCell>{page.content}</TableCell>
               <TableCell className="text-right">
                 <Link href={`/pages/${page.id}`}>
                   <Button size="sm" variant="ghost">
@@ -68,6 +73,13 @@ export default function PagePage() {
       </Table>
 
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+        <Button
+          variant="ghost"
+          className="text-destructive hover:bg-destructive hover:text-white"
+          onClick={resetDataHandler}
+        >
+          Reset to default data
+        </Button>
         <Link href="/pages/new">
           <Button>New page</Button>
         </Link>

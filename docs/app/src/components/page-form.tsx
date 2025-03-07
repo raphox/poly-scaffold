@@ -1,7 +1,9 @@
 import React from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+
+import MDEditor from "@uiw/react-md-editor";
 
 import {
   FormControl,
@@ -23,7 +25,7 @@ type FormData = z.infer<typeof schema>;
 export const resolver = zodResolver(schema);
 
 export default function PageForm() {
-  const { control } = useFormContext<FormData>();
+  const { control, register } = useFormContext<FormData>();
 
   return (
     <>
@@ -53,17 +55,16 @@ export default function PageForm() {
           </FormItem>
         )}
       />
-      <FormField
-        control={control}
+      <Controller
         name="content"
+        control={control}
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Content:</FormLabel>
-            <FormControl>
-              <Input type="text" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
+          <MDEditor
+            className="not-prose"
+            height={500}
+            value={field.value}
+            onChange={field.onChange}
+          />
         )}
       />
     </>

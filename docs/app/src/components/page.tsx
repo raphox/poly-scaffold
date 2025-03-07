@@ -8,6 +8,27 @@ export interface Props {
 }
 
 export default function Page(props: Props) {
+  const hljs = window.hljs;
+  const md = window.markdownit({
+    highlight: function (str, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return (
+            '<pre><code class="hljs">' +
+            hljs.highlight(str, { language: lang, ignoreIllegals: true })
+              .value +
+            "</code></pre>"
+          );
+        } catch (__) {}
+      }
+
+      return (
+        '<pre><code class="hljs">' + md.utils.escapeHtml(str) + "</code></pre>"
+      );
+    },
+  });
+  const content = md.render(props.content);
+
   return (
     <>
       <p>
@@ -17,8 +38,9 @@ export default function Page(props: Props) {
         <b>Description:</b> {props.description}
       </p>
       <p>
-        <b>Content:</b> {props.content}
+        <b>Content:</b>
       </p>
+      <div dangerouslySetInnerHTML={{ __html: content }} />
     </>
   );
 }

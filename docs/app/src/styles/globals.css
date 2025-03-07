@@ -3,6 +3,10 @@
 @plugin "tailwindcss-animate";
 @plugin "@tailwindcss/typography";
 
+.hljs {
+  background: none;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {

@@ -1,5 +1,12 @@
 import React from "react";
 
+declare global {
+  interface Window {
+    hljs: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    markdownit: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  }
+}
+
 export interface Props {
   id: string;
   title: string;
@@ -10,7 +17,7 @@ export interface Props {
 export default function Page(props: Props) {
   const hljs = window.hljs;
   const md = window.markdownit({
-    highlight: function (str, lang) {
+    highlight: function (str: string, lang: string) {
       if (lang && hljs.getLanguage(lang)) {
         try {
           return (
@@ -19,7 +26,9 @@ export default function Page(props: Props) {
               .value +
             "</code></pre>"
           );
-        } catch (__) {}
+        } catch (e) {
+          console.error(e);
+        }
       }
 
       return (

@@ -25,7 +25,7 @@ type FormData = z.infer<typeof schema>;
 export const resolver = zodResolver(schema);
 
 export default function PageForm() {
-  const { control, register } = useFormContext<FormData>();
+  const { control } = useFormContext<FormData>();
 
   return (
     <>

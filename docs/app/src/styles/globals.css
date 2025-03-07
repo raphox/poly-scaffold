@@ -1,14 +1,16 @@
+.w-md-editor-text {
+  --md-editor-font-family: var(--font-mono);
+}
+
 @import "tailwindcss";
+@import "@uiw/react-md-editor/markdown-editor.css";
+@import "@uiw/react-markdown-preview/markdown.css";
 
 @plugin "tailwindcss-animate";
 @plugin "@tailwindcss/typography";
 
 .hljs {
   background: none;
-}
-
-.w-md-editor-text-pre > code .code-line {
-  font-family: var(--font-mono);
 }
 
 @custom-variant dark (&:is(.dark *));

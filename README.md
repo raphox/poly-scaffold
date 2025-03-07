@@ -52,7 +52,7 @@ pscaffold next post title:string description:text -t ./
 └── services.ts
 ```
 
-Sample of generated code: [docs/sample/src](docs/samples).
+Sample of generated code: [docs/samples](https://github.com/raphox/poly-scaffold/blob/gh-page/docs/samples).
 
 ## Development
 

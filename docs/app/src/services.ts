@@ -25,9 +25,9 @@ api.interceptors.request.use(
   },
 );
 
-import HomePage from 'raw-loader!./markdowns/README.md';
-import Frameworks from 'raw-loader!./markdowns/frameworks.md';
-import FrameworksNextJs from 'raw-loader!./markdowns/frameworks/nextjs.md';
+import HomePage from './markdowns/README.md';
+import Frameworks from './markdowns/frameworks.md';
+import FrameworksNextJs from './markdowns/frameworks/nextjs.md';
 
 const defaultData = [
   {

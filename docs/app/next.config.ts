@@ -9,12 +9,20 @@ const removeImportsFun = removeImports({
 
 const nextConfig: NextConfig = {
   output: 'export',
-  basePath: "/poly-scaffold",
+  basePath: process.env.NODE_ENV === "production" ? "/poly-scaffold" : undefined,
   images: {
     unoptimized: true,
   },
   /* config options here */
   reactStrictMode: true,
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.md$/,
+      use: 'raw-loader',
+    });
+
+    return config;
+  },
   experimental: {
     turbo: {
       rules: {

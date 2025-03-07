@@ -7,6 +7,10 @@
   background: none;
 }
 
+.w-md-editor-text-pre > code .code-line {
+  font-family: var(--font-mono);
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {

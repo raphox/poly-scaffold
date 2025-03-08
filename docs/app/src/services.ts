@@ -25,25 +25,73 @@ api.interceptors.request.use(
   },
 );
 
-import HomePage from './markdowns/README.md';
+import GettingStarted from './markdowns/getting-started.md';
+import BackendApi from './markdowns/api-restful.md';
+import BackendRubyOnRails from './markdowns/backend/ruby-on-rails.md';
+import BackendDjango from './markdowns/backend/django.md';
+import BackendLaravel from './markdowns/backend/laravel.md';
+import BackendExpress from './markdowns/backend/express.md';
 import Frameworks from './markdowns/frameworks.md';
 import FrameworksNextJs from './markdowns/frameworks/nextjs.md';
+import FrameworkNuxt from './markdowns/frameworks/nuxt.md';
+import Features from './markdowns/features.md';
+import Contributing from './markdowns/contributing.md';
 
 const defaultData = [
   {
-    title: 'README.md',
+    title: 'Getting Started',
     description: 'Poly Scaffold is a command-line tool for generating scaffold code for various frameworks.',
-    content: HomePage,
+    content: GettingStarted,
   },
   {
-    title: 'frameworks.md',
-    description: 'Frameworks supported by Poly Scaffold.',
+    title: 'Backend',
+    description: 'Using the generated code, you can create a backend API using various frameworks.',
+    content: BackendApi,
+  },
+  {
+    title: 'Backend / Ruby on Rails',
+    description: 'Ruby on Rails is a web application framework written in Ruby.',
+    content: BackendRubyOnRails,
+  },
+  {
+    title: 'Backend / Django',
+    description: 'Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design.',
+    content: BackendDjango,
+  },
+  {
+    title: 'Backend / Laravel',
+    description: 'Laravel is a web application framework with expressive, elegant syntax.',
+    content: BackendLaravel,
+  },
+  {
+    title: 'Backend / Express.js',
+    description: 'Express.js is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.',
+    content: BackendExpress,
+  },
+  {
+    title: 'Frontend',
+    description: 'Using the generated code, you can create a frontend using various frameworks.',
     content: Frameworks,
   },
   {
-    title: 'frameworks/next.md',
+    title: 'Frontend / Next.js',
     description: 'Next.js is a React framework that enables server-side rendering and static site generation.',
     content: FrameworksNextJs,
+  },
+  {
+    title: 'Frontend / Nuxt.js',
+    description: 'Nuxt.js is a Vue framework that enables server-side rendering and static site generation.',
+    content: FrameworkNuxt,
+  },
+  {
+    title: 'Features',
+    description: 'Poly Scaffold is a command-line tool for generating scaffold code for various frameworks.',
+    content: Features,
+  },
+  {
+    title: 'Contributing',
+    description: 'Poly Scaffold is a command-line tool for generating scaffold code for various frameworks.',
+    content: Contributing,
   },
 ];
 
@@ -55,6 +103,7 @@ function setupLocalDatabase() {
   })
 
   db.on('populate', (tx: Transaction) => {
+    tx.table('pages').clear();
     tx.table('pages').bulkAdd(defaultData);
   });
 

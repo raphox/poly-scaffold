@@ -3,65 +3,47 @@ import { generateFiles, OverwriteStrategy } from "@/lib/generate-files";
 import { Framework } from "@/types";
 import { updateJson } from "@/lib/utils";
 import { getDependenciesVersionsToInstall } from "./dependencies";
+import { TGeneratorOptions } from "../types";
 
 export const generator = async function (
   framework: Framework,
   target: string,
-  options: any,
+  options: TGeneratorOptions,
 ) {
   const templates = framework.templates;
-  const srcPath = `${target}${fs.existsSync(`${target}/src`) ? "/src" : ""}`;
+  const srcPath = target;
 
-  options.isAppRouter =
-    fs.existsSync(`${target}/app`) || fs.existsSync(`${target}/src/app`);
-
-  if (options.isAppRouter) {
-    await generateFiles({
-      files: Object.values(templates.app),
-      target: `${srcPath}/app`,
-      substitutions: options,
-      render: framework.render,
-      options: { overwriteStrategy: OverwriteStrategy.Prompt },
-    });
-
-    await generateFiles({
-      remaps: {
-        "list.ejs": "__resources__/page.__ext__x.ejs",
-        "new.ejs": "__resources__/new/page.__ext__x.ejs",
-        "show.ejs": "__resources__/[id]/page.__ext__x.ejs",
-        "edit.ejs": "__resources__/[id]/edit/page.__ext__x.ejs",
-      },
-      files: Object.values(templates["shared/pages"]),
-      target: `${srcPath}/pages`,
-      substitutions: options,
-      render: framework.render,
-      options: { overwriteStrategy: OverwriteStrategy.Overwrite },
-    });
-  } else {
-    await generateFiles({
-      files: Object.values(templates.pages),
-      target: `${srcPath}/pages`,
-      substitutions: options,
-      render: framework.render,
-      options: { overwriteStrategy: OverwriteStrategy.Prompt },
-    });
-
-    await generateFiles({
-      remaps: {
-        "list.ejs": "__resources__/index.__ext__x.ejs",
-        "new.ejs": "__resources__/new.__ext__x.ejs",
-        "show.ejs": "__resources__/[id]/index.__ext__x.ejs",
-        "edit.ejs": "__resources__/[id]/edit.__ext__x.ejs",
-      },
-      files: Object.values(templates["shared/pages"]),
-      target: `${srcPath}/pages`,
-      substitutions: options,
-      render: framework.render,
-      options: { overwriteStrategy: OverwriteStrategy.Overwrite },
-    });
-  }
-
+  // app level files
   await generateFiles({
+    files: Object.values(templates.app),
+    target: `${srcPath}/app`,
+    substitutions: options,
+    render: framework.render,
+    options: { overwriteStrategy: OverwriteStrategy.Prompt },
+  });
+
+  // model level files
+  await generateFiles({
+    remaps: {
+      "list.ejs": "__resources__/index.vue.ejs",
+      "new.ejs": "__resources__/new.vue.ejs",
+      "show.ejs": "__resources__/[id]/index.vue.ejs",
+      "edit.ejs": "__resources__/[id]/edit/index.vue.ejs",
+    },
+    files: Object.values(templates["shared/pages"]),
+    target: `${srcPath}/pages`,
+    substitutions: options,
+    render: framework.render,
+    options: { overwriteStrategy: OverwriteStrategy.Overwrite },
+  });
+
+  // shared components
+  await generateFiles({
+    remaps: {
+      "form.ejs": "__resources__/form.vue",
+      "details.ejs": "__resources__/details.vue",
+      "types.ejs": "__resources__/types.ts",
+    },
     files: Object.values(templates["shared/components"]),
     target: `${srcPath}/components`,
     substitutions: options,
@@ -69,6 +51,7 @@ export const generator = async function (
     options: { overwriteStrategy: OverwriteStrategy.Prompt },
   });
 
+  // others
   await generateFiles({
     files: Object.values(templates["others"]),
     target: srcPath,

@@ -1,0 +1,52 @@
+import type {
+  objectInputType,
+  objectOutputType,
+  ZodObject,
+  ZodTypeAny,
+} from "zod";
+import type { T__FormErrors, T__ZodSchema } from "~/types";
+
+type TZodSchemaObject<T> = ZodObject<
+  T__ZodSchema<T>,
+  "strip",
+  ZodTypeAny,
+  objectOutputType<T__ZodSchema<T>, ZodTypeAny, "strip">,
+  objectInputType<T__ZodSchema<T>, ZodTypeAny, "strip">
+>;
+
+export const useZodValidator = <T>(
+  form: Ref<T>,
+  errors: Ref<T__FormErrors<T>>,
+  schema: TZodSchemaObject<T>,
+) => {
+  const reset = () => (errors.value = {});
+
+  const validate = () => {
+    // reset errors
+    reset();
+
+    // validate form
+    const validation = schema.safeParse(form.value);
+
+    // return true if no errors
+    if (!validation.error) return true;
+
+    // set errors
+    const {
+      error: { formErrors },
+    } = validation;
+
+    const zodErrors = Object.entries<string[] | undefined>(
+      formErrors.fieldErrors,
+    ).map(([k, v]) => [k, v?.join(", ")]);
+
+    errors.value = Object.fromEntries(zodErrors);
+
+    // return false
+    return false;
+  };
+
+  return {
+    validate,
+  };
+};

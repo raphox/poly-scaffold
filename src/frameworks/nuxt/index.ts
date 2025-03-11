@@ -19,7 +19,7 @@ export const generator = async function (
     target: `${srcPath}/app`,
     substitutions: options,
     render: framework.render,
-    options: { overwriteStrategy: OverwriteStrategy.Prompt },
+    options: { overwriteStrategy: OverwriteStrategy.Prompt, parser: "vue" },
   });
 
   // model level files
@@ -34,21 +34,21 @@ export const generator = async function (
     target: `${srcPath}/pages`,
     substitutions: options,
     render: framework.render,
-    options: { overwriteStrategy: OverwriteStrategy.Overwrite },
+    options: { overwriteStrategy: OverwriteStrategy.Overwrite, parser: "vue" },
   });
 
   // shared components
   await generateFiles({
     remaps: {
       "form.ejs": "__resources__/form.vue",
-      "details.ejs": "__resources__/details.vue",
+      "details.vue.ejs": "__resources__/details.vue",
       "types.ejs": "__resources__/types.ts",
     },
     files: Object.values(templates["shared/components"]),
     target: `${srcPath}/components`,
     substitutions: options,
     render: framework.render,
-    options: { overwriteStrategy: OverwriteStrategy.Prompt },
+    options: { overwriteStrategy: OverwriteStrategy.Prompt, parser: "vue" },
   });
 
   // others
@@ -57,7 +57,7 @@ export const generator = async function (
     target: srcPath,
     substitutions: options,
     render: framework.render,
-    options: { overwriteStrategy: OverwriteStrategy.Overwrite },
+    options: { overwriteStrategy: OverwriteStrategy.Overwrite, parser: "vue" },
   });
 
   // package.json

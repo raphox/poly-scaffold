@@ -1,0 +1,57 @@
+import React from "react";
+import Link from "next/link";
+import { useRouter } from 'next/router';
+import { useParams, useSearchParams } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { api } from "@/services";
+import <%= resourceNames.classify %><% if (isTypescript) { %>, { Props as <%= resourceNames.classify %>Props }<% } %> from "@/components/<%= resource %>";
+
+export default function <%= resourceNames.classify %>ShowPage() {
+  const router = useRouter();
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
+  const notice = searchParams.get("notice");
+  const <%= resource %>Id = params?.id;
+
+  const { isPending: isDeleting, mutate } = useMutation({
+    mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.delete(`/<%= resources %>/${<%= resourceNames.camelize %>Id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["<%= resources %>"] });
+      router.replace({
+        pathname: "/<%= resources %>",
+        query: { notice: "Removed with success." },
+      });
+    },
+  });
+
+  const { isPending, error, data } = useQuery<% if (isTypescript) { %><<%= resourceNames.classify %>Props><% } %>({
+    queryFn: () => api.get(`/<%= resources %>/${<%= resourceNames.camelize %>Id}`).then((res) => res.data),
+    queryKey: ["<%= resources %>", <%= resource %>Id],
+    enabled: !!<%= resource %>Id,
+  });
+
+  if (isPending) {
+    return "Loading...";
+  } else if (error) {
+    return "An error has occurred: " + (error<% if (isTypescript) { %> as Error<% } %>).message;
+  }
+
+  return (
+    <>
+      {notice && <p style={{ color: "green" }}>{notice}</p>}
+
+      <<%= resourceNames.classify %> {...data} />
+
+      <div>
+        <Link href={`/<%= resources %>/${<%= resourceNames.camelize %>Id}/edit`}>Edit this <%= resource %></Link>
+        {" | "}
+        <Link href="/<%= resources %>">Back to <%= resources %></Link>{" "}
+        <button disabled={isDeleting} onClick={() => mutate(<%= resource %>Id)}>
+          Destroy this <%= resource %>
+        </button>
+      </div>
+    </>
+  );
+}

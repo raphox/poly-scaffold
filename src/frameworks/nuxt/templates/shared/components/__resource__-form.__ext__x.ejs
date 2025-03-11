@@ -1,0 +1,35 @@
+import React from "react";
+import { useFormContext } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const schema = z.object({
+  <%_ attributes.forEach(function({ name, type }) { _%>
+  <%- name %>: z.<%= mapZodType(type) %>(),
+  <%_ }) _%>
+});
+
+<% if (isTypescript) { %>
+type FormData = z.infer<typeof schema>;
+<% } %>
+
+export const resolver = zodResolver(schema);
+
+export default function <%= resourceNames.classify %>Form() {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<% if (isTypescript) { %><FormData><% } %>();
+
+  return (
+    <>
+    <%_ attributes.forEach(function({ name, type }) { _%>
+      <p>
+        <label htmlFor="<%= name %>"><%= titleize(name) %>:</label>
+        <input type="<%= type %>" {...register("<%= name %>")} />
+        {errors.<%= name %> && <span>{errors.<%= name %>.message}</span>}
+      </p>
+    <%_ }) _%>
+    </>
+  );
+}

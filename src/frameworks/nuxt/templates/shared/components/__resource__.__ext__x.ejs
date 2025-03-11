@@ -1,0 +1,22 @@
+import React from "react";
+
+<% if (isTypescript) { _%>
+export interface Props {
+  id: string;
+  <%_ attributes.forEach(function({ name, type }) { _%>
+  <%- name %>: <%= mapType(type) %>;
+  <%_ }) _%>
+}
+<% } _%>
+
+export default function <%= resourceNames.classify %>(props<% if (isTypescript) { %>: Props<% } %>) {
+  return (
+    <>
+    <%_ attributes.forEach(function({ name, type }) { _%>
+      <p>
+        <b><%= titleize(name) %>:</b> {props.<%= name %>}
+      </p>
+    <%_ }) _%>
+    </>
+  );
+}

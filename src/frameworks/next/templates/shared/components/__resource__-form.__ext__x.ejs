@@ -1,43 +1,35 @@
-<script setup lang="ts">
-  import * as z from "zod";
-  import type { TPostForm, TPostFormErrors, TPostZodSchema } from "./types";
+import React from "react";
+import { useFormContext } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
-  const form = defineModel<TPostForm>({ required: true });
-  const errors = defineModel<TPostFormErrors>("errors", { required: true });
-  const schema = z.object<TPostZodSchema>({
-    title: z.string().nonempty(),
-    description: z.string().nonempty(),
-  });
+const schema = z.object({
+  <%_ attributes.forEach(function({ name, type }) { _%>
+  <%- name %>: z.<%= mapZodType(type) %>(),
+  <%_ }) _%>
+});
 
-  const { validate } = useZodValidator(form, errors, schema);
+<% if (isTypescript) { %>
+type FormData = z.infer<typeof schema>;
+<% } %>
 
-  const emit = defineEmits<{
-    (e: "submit"): void;
-  }>();
+export const resolver = zodResolver(schema);
 
-  const onFormSubmit = () => {
-    if (validate()) emit("submit");
-  };
-</script>
+export default function <%= resourceNames.classify %>Form() {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<% if (isTypescript) { %><FormData><% } %>();
 
-<template>
-  <form @submit.prevent="onFormSubmit">
-    <div>
-      <label htmlFor="title">Title:</label>
-      <input type="string" v-model="form.title" />
-      <span v-if="errors.title">{{ errors.title }}</span>
-    </div>
-    <div>
-      <label htmlFor="description">Description:</label>
-      <input type="text" v-model="form.description" />
-      <span v-if="errors.description">{{ errors.description }}</span>
-    </div>
-
-    <!-- actions -->
-    <slot name="actions" v-bind="{ onFormSubmit }">
-      <div>
-        <button type="submit">submit</button>
-      </div>
-    </slot>
-  </form>
-</template>
+  return (
+    <>
+    <%_ attributes.forEach(function({ name, type }) { _%>
+      <p>
+        <label htmlFor="<%= name %>"><%= titleize(name) %>:</label>
+        <input type="<%= type %>" {...register("<%= name %>")} />
+        {errors.<%= name %> && <span>{errors.<%= name %>.message}</span>}
+      </p>
+    <%_ }) _%>
+    </>
+  );
+}

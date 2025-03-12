@@ -1,0 +1,13 @@
+<script setup lang="ts">
+import type { T<%= resourceNames.capitalize %> } from "./types";
+
+const { <%= resourceNames.camelize %> } = defineProps<{ <%= resourceNames.camelize %>: T<%= resourceNames.capitalize %> }>();
+</script>
+
+<template>
+  <div v-if="<%= resourceNames.camelize %>">
+    <%_ attributes.forEach(function({ name, type }) { _%>
+    <p><b><%= name %>:</b> {{ <%= resourceNames.camelize %>.<%= name %> }}</p>
+    <%_ }) _%>
+  </div>
+</template>

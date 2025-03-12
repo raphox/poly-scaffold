@@ -1,47 +1,44 @@
-import React from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+<script setup lang="ts">
+  import { default as <%= resourceNames.capitalize %>Form } from "~/components/<%= resourceNames.singular %>s/form.vue";
+  import type { T<%= resourceNames.capitalize %>Form, T<%= resourceNames.capitalize %>FormErrors } from "~/components/<%= resourceNames.singular %>s/types";
 
-import { api } from "@/services";
-import { FormProvider } from "@/providers";
-<% if (isTypescript) { %>import { Props as <%= resourceNames.classify %>Props } from "@/components/<%= resource %>";<% } %>
-import <%= resourceNames.classify %>Form, { resolver } from "@/components/<%= resource %>-form";
-
-export default function <%= resourceNames.classify %>NewPage() {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-
-  const { isPending: isCreating, mutateAsync } = useMutation({
-    mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.post("/<%= resources %>", data),
-    onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({ queryKey: ["<%= resources %>"] });
-      router.push({
-        pathname: `/<%= resources %>/${data.id}`,
-        query: { notice: "Created with success." },
-      });
-    },
+  const form = ref<T<%= resourceNames.capitalize %>Form>({
+    title: "",
+    description: "",
   });
+  const errors = ref<T<%= resourceNames.capitalize %>FormErrors>({});
 
-  return (
-    <>
-      <h1>New <%= resource %></h1>
+  const loading = ref(false);
+  const onSubmit = async () => {
+    loading.value = true;
+    const { success } = await use<%= resourceNames.capitalize %>sStore().create<%= resourceNames.capitalize %>(form.value);
+    loading.value = false;
 
-      <FormProvider resolver={resolver} values={{}} onSubmit={mutateAsync}>
-        <<%= resourceNames.classify %>Form />
+    if (success) return useRouter().push("/<%= resourceNames.singular %>s");
 
+    errors;
+  };
+  </script>
+
+  <template>
+    <h1>News <%= resourceNames.singular %></h1>
+
+    <<%= resourceNames.capitalize %>Form
+      v-if="form"
+      v-model="form"
+      v-model:errors="errors"
+      @submit="onSubmit"
+    >
+      <template #actions>
         <div>
-          <button disabled={isCreating} type="submit">
-            Create
-          </button>
+          <button :disabled="loading" type="submit">Create</button>
         </div>
-      </FormProvider>
+      </template>
+    </<%= resourceNames.capitalize %>Form>
 
-      <br />
+    <br />
 
-      <div>
-        <Link href="/<%= resources %>">Back to <%= resources %></Link>
-      </div>
-    </>
-  );
-}
+    <div>
+      <RouterLink to="/<%= resourceNames.singular %>s">Back to <%= resourceNames.singular %>s</RouterLink>
+    </div>
+  </template>

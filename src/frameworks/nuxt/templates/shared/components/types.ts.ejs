@@ -1,0 +1,13 @@
+import type { T__Form, T__FormErrors, T__ZodSchema } from "../../types";
+
+export type T<%= resourceNames.capitalize %> = {
+  id: number;
+  <%_ attributes.forEach(function({ name, type }) { _%>
+    <%= name %>: <%= mapType(type) %>
+  <%_ }) _%>
+};
+
+export type T<%= resourceNames.capitalize %>Form = Omit<T<%= resourceNames.capitalize %>, "id">;
+export type T<%= resourceNames.capitalize %>FormErrors = Partial<Record<keyof T<%= resourceNames.capitalize %>Form, string>>;
+
+export type TPostZodSchema = T__ZodSchema<T<%= resourceNames.capitalize %>Form>;

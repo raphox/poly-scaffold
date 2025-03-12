@@ -1,0 +1,60 @@
+<script setup lang="ts">
+  import { default as <%= resourceNames.classify %>Form } from "~/components/<%= resourceNames.plural %>/form.vue";
+  import type {
+    T<%= resourceNames.classify %>,
+    T<%= resourceNames.classify %>Form,
+    T<%= resourceNames.classify %>FormErrors,
+  } from "~/components/<%= resourceNames.plural %>/types";
+  import { props, validate } from "../helpers";
+
+  const { <%= resourceNames.singular %> } = defineProps<{ <%= resourceNames.singular %>: T<%= resourceNames.classify %> }>();
+  definePageMeta({
+    validate,
+    props,
+  });
+
+  const form = ref<T<%= resourceNames.classify %>Form>();
+  const errors = ref<T<%= resourceNames.classify %>FormErrors>({});
+  onMounted(() => {
+    form.value = {
+      title: <%= resourceNames.singular %>.title,
+      description: <%= resourceNames.singular %>.description,
+    };
+  });
+
+  const loading = ref(false);
+  const onSubmit = async () => {
+    if (!form.value) return;
+
+    loading.value = true;
+    const { success } = await use<%= pluralize(resourceNames.classify) %>Store().update<%= resourceNames.classify %>(<%= resourceNames.singular %>.id, form.value);
+    loading.value = false;
+
+    if (success) return useRouter().push("/<%= resourceNames.plural %>");
+
+    errors;
+  };
+  </script>
+
+  <template>
+    <h1>Editing <%= resourceNames.singular %></h1>
+
+    <<%= resourceNames.classify %>Form
+      v-if="form"
+      v-model="form"
+      v-model:errors="errors"
+      @submit="onSubmit"
+    >
+      <template #actions>
+        <div>
+          <button :disabled="loading" type="submit">Update</button>
+        </div>
+      </template>
+    </<%= resourceNames.classify %>Form>
+
+    <div>
+      <RouterLink :to="`/<%= resourceNames.plural %>/${<%= resourceNames.singular %>.id}`">Show this <%= resourceNames.singular %></RouterLink>
+      |
+      <RouterLink to="/<%= resourceNames.plural %>">Back to <%= resourceNames.plural %></RouterLink>
+    </div>
+  </template>

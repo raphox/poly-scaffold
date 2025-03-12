@@ -1,0 +1,45 @@
+import type { T<%= resourceNames.capitalize %>, T<%= resourceNames.capitalize %>Form } from "~/components/<%= resourceNames.singular %>/types";
+import type { ApiResponse } from ".";
+
+export const use<%= resourceNames.capitalize %>sService = () => {
+  const list = async (): Promise<ApiResponse<T<%= resourceNames.capitalize %>[]>> => {
+    await new Promise((res) => setTimeout(res, 1000));
+
+    return {
+      success: true,
+      data: [
+        { id: 1, title: "<%= resourceNames.capitalize %> 1", description: "Description 1" },
+        { id: 2, title: "<%= resourceNames.capitalize %> 2", description: "Description 2" },
+        { id: 3, title: "<%= resourceNames.capitalize %> 3", description: "Description 3" },
+      ],
+    };
+  };
+
+  const create = async (data: T<%= resourceNames.capitalize %>Form): Promise<ApiResponse<T<%= resourceNames.capitalize %>>> => {
+    await new Promise((res) => setTimeout(res, 1000));
+
+    return { success: true, data: { id: Math.random(), ...data } };
+  };
+
+  const destroy = async (id: number): Promise<ApiResponse<void>> => {
+    await new Promise((res) => setTimeout(res, 1000));
+
+    return { success: true, data: undefined };
+  };
+
+  const update = async (
+    id: number,
+    data: Omit<T<%= resourceNames.capitalize %>, "id">
+  ): Promise<ApiResponse<T<%= resourceNames.capitalize %>>> => {
+    await new Promise((res) => setTimeout(res, 1000));
+
+    return { success: true, data: { id, ...data } };
+  };
+
+  return {
+    list,
+    create,
+    destroy,
+    update,
+  };
+};

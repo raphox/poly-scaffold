@@ -1,0 +1,44 @@
+<script setup lang="ts">
+  import { default as <%= resourceNames.capitalize %>Form } from "~/components/<%= resourceNames.singular %>s/form.vue";
+  import type { T<%= resourceNames.capitalize %>Form, T<%= resourceNames.capitalize %>FormErrors } from "~/components/<%= resourceNames.singular %>s/types";
+
+  const form = ref<T<%= resourceNames.capitalize %>Form>({
+    title: "",
+    description: "",
+  });
+  const errors = ref<T<%= resourceNames.capitalize %>FormErrors>({});
+
+  const loading = ref(false);
+  const onSubmit = async () => {
+    loading.value = true;
+    const { success } = await use<%= resourceNames.capitalize %>sStore().create<%= resourceNames.capitalize %>(form.value);
+    loading.value = false;
+
+    if (success) return useRouter().push("/<%= resourceNames.singular %>s");
+
+    errors;
+  };
+  </script>
+
+  <template>
+    <h1>News <%= resourceNames.singular %></h1>
+
+    <<%= resourceNames.capitalize %>Form
+      v-if="form"
+      v-model="form"
+      v-model:errors="errors"
+      @submit="onSubmit"
+    >
+      <template #actions>
+        <div>
+          <button :disabled="loading" type="submit">Create</button>
+        </div>
+      </template>
+    </<%= resourceNames.capitalize %>Form>
+
+    <br />
+
+    <div>
+      <RouterLink to="/<%= resourceNames.singular %>s">Back to <%= resourceNames.singular %>s</RouterLink>
+    </div>
+  </template>

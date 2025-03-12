@@ -1,0 +1,48 @@
+<script setup lang="ts">
+  import <%= resourceNames.classify %>Details from "~/components/<%= resourceNames.plural %>/details.vue";
+  import type { T<%= resourceNames.classify %> } from "~/components/<%= resourceNames.plural %>/types";
+  import { props, validate } from "./helpers";
+
+  const { <%= resourceNames.singular %> } = defineProps<{ <%= resourceNames.singular %>?: T<%= resourceNames.classify %> }>();
+  definePageMeta({
+    validate,
+    props,
+  });
+
+  const isDeleting = ref(false);
+  const onDestroyClickHandler = async () => {
+    if (!<%= resourceNames.singular %>) return;
+
+    isDeleting.value = true;
+    const { success, data } = await use<%= pluralize(resourceNames.classify) %>Store().destroy<%= resourceNames.classify %>(<%= resourceNames.singular %>.id);
+    isDeleting.value = false;
+
+    if (!success) {
+      alert(data);
+      return;
+    }
+
+    useRouter().push("/<%= resourceNames.plural %>");
+  };
+</script>
+
+<template>
+  <<%= resourceNames.classify %>Details v-if="<%= resourceNames.singular %>"
+  :<%= resourceNames.singular %>="<%= resourceNames.singular %>" />
+
+  <div>
+    <RouterLink
+      v-if="<%= resourceNames.singular %>"
+      :to="`/<%= resourceNames.plural %>/${<%= resourceNames.singular %>.id}/edit`"
+      >Edit this <%= resourceNames.singular %></RouterLink
+    >
+    |
+    <RouterLink to="/<%= resourceNames.plural %>"
+      >Back to <%= resourceNames.plural %></RouterLink
+    >
+    |
+    <button :disabled="isDeleting" @click="onDestroyClickHandler">
+      Destroy this <%= resourceNames.singular %>
+    </button>
+  </div>
+</template>

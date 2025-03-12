@@ -1,0 +1,74 @@
+import { defineStore } from "pinia";
+import type { T<%= resourceNames.classify %>, T<%= resourceNames.classify %>Form } from "~/components/<%= resourceNames.plural %>/types";
+import { use<%= pluralize(resourceNames.classify) %>Service } from "~/services/<%= resourceNames.plural %>";
+
+export const use<%= pluralize(resourceNames.classify) %>Store = defineStore("<%= resourceNames.plural %>", () => {
+  // services
+  const { list, create, destroy, update } = use<%= pluralize(resourceNames.classify) %>Service();
+
+  // state
+  const <%= resourceNames.plural %> = ref<T<%= resourceNames.classify %>[]>();
+  const loading = ref<boolean>();
+  const error = ref<string>();
+
+  // methods
+  const fetch<%= pluralize(resourceNames.classify) %> = async () => {
+    loading.value = true;
+    error.value = undefined;
+
+    const response = await list();
+    loading.value = false;
+
+    if (!response.success) {
+      error.value = response.error;
+      return;
+    }
+
+    <%= resourceNames.plural %>.value = response.data;
+  };
+
+  const create<%= resourceNames.classify %> = async (data: T<%= resourceNames.classify %>Form) => {
+    const res = await create(data);
+
+    if (res.success) {
+      if (!<%= resourceNames.plural %>.value) <%= resourceNames.plural %>.value = [];
+      <%= resourceNames.plural %>.value.push(res.data);
+    }
+
+    return res;
+  };
+
+  const destroy<%= resourceNames.classify %> = async (id: number) => {
+    const res = await destroy(id);
+
+    if (!<%= resourceNames.plural %>.value) return res;
+
+    if (res.success) <%= resourceNames.plural %>.value = <%= resourceNames.plural %>.value.filter((<%= resourceNames.singular %>) => <%= resourceNames.singular %>.id !== id);
+
+    return res;
+  };
+
+  const update<%= resourceNames.classify %> = async (id: number, data: T<%= resourceNames.classify %>Form) => {
+    const res = await update(id, data);
+
+    if (!<%= resourceNames.plural %>.value) return res
+
+    if (res.success) {
+      const index = <%= resourceNames.plural %>.value.findIndex((p) => p.id === id);
+
+      if (index !== -1) <%= resourceNames.plural %>.value[index] = res.data;
+    }
+
+    return res;
+  };
+
+  return {
+    loading,
+    error,
+    <%= resourceNames.plural %>,
+    fetch<%= pluralize(resourceNames.classify) %>,
+    create<%= resourceNames.classify %>,
+    destroy<%= resourceNames.classify %>,
+    update<%= resourceNames.classify %>,
+  };
+});

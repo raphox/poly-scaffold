@@ -1,0 +1,43 @@
+<script setup lang="ts">
+  import * as z from "zod";
+  import type { T<%= resourceNames.capitalize %>Form, T<%= resourceNames.capitalize %>FormErrors, T<%= resourceNames.capitalize %>ZodSchema } from "./types";
+
+  const form = defineModel<T<%= resourceNames.capitalize %>Form>({ required: true });
+  const errors = defineModel<T<%= resourceNames.capitalize %>FormErrors>("errors", { required: true });
+  const schema = z.object<T<%= resourceNames.capitalize %>ZodSchema>({
+    <%_ attributes.forEach(function({ name, type }) { _%>
+    <%- name %>: z.<%= mapZodType(type) %>(),
+    <%_ }) _%>
+  });
+
+  const { validate } = useZodValidator(form, errors, schema);
+
+  const emit = defineEmits<{
+    (e: "submit"): void;
+  }>();
+
+  const onFormSubmit = () => {
+    if (validate()) emit("submit");
+  };
+
+  const formId = useId()
+  </script>
+
+  <template>
+    <form @submit.prevent="onFormSubmit">
+      <%_ attributes.forEach(function({ name, type }) { _%>
+      <div>
+        <label :for="`${formId}-<%= name %>`"><%= titleize(name) %>:</label>
+        <input :id="`${formId}-<%= name %>`" type="<%= type %>" v-model="form.<%= name %>" />
+        <span v-if="errors.<%= name %>">{{ errors.<%= name %> }}</span>
+      </div>
+      <%_ }) _%>
+
+      <!-- actions -->
+      <slot name="actions" v-bind="{ onFormSubmit }">
+        <div>
+          <button type="submit">submit</button>
+        </div>
+      </slot>
+    </form>
+  </template>

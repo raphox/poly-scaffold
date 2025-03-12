@@ -1,0 +1,41 @@
+<script setup lang="ts">
+  import { default as <%= resourceNames.classify %>Details } from "~/components/<%= resourceNames.plural %>/details.vue";
+  const { <%= resourceNames.plural %>, loading, error } = storeToRefs(use<%= pluralize(resourceNames.classify) %>Store());
+  const { fetch<%= pluralize(resourceNames.classify) %> } = use<%= pluralize(resourceNames.classify) %>Store();
+
+  onMounted(() => {
+    if (<%= resourceNames.plural %>.value === undefined) fetch<%= pluralize(resourceNames.classify) %>();
+  });
+</script>
+
+<template>
+  <h1><%= pluralize(resourceNames.classify) %></h1>
+
+  <!-- Loading -->
+  <div v-if="loading">Loading...</div>
+
+  <!-- Error -->
+  <div v-else-if="error">An error has occured: {{ error }}</div>
+
+  <!-- Show all <%= resourceNames.plural %> -->
+  <div v-else id="<%= resourceNames.plural %>">
+    <div
+      v-for="<%= resourceNames.singular %> of <%= resourceNames.plural %>"
+      :key="<%= resourceNames.singular %>.id"
+    >
+      <<%= resourceNames.classify %>Details :<%= resourceNames.singular %>="<%=
+      resourceNames.singular %>" />
+      <p>
+        <RouterLink
+          :to="`/<%= resourceNames.plural %>/${<%= resourceNames.singular %>.id}`"
+          >Show this <%= resourceNames.singular %></RouterLink
+        >
+      </p>
+    </div>
+  </div>
+
+  <!-- New <%= resourceNames.singular %> -->
+  <RouterLink to="/<%= resourceNames.plural %>/new"
+    >New <%= resourceNames.singular %></RouterLink
+  >
+</template>

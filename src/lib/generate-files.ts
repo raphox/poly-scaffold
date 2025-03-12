@@ -18,9 +18,15 @@ export enum OverwriteStrategy {
   Prompt = "prompt",
 }
 
+export type ParserOptions =
+  | "typescript"
+  | "javascript"
+  | "json"
+  | "css"
+  | "vue";
 export interface GenerateFilesOptions {
   overwriteStrategy?: OverwriteStrategy;
-  parser?: "typescript" | "javascript" | "json" | "css" | "vue";
+  parser?: ParserOptions | ((filename: string) => ParserOptions);
 }
 
 async function handleOverwriteStrategy(
@@ -81,9 +87,17 @@ export async function generateFiles({
       substitutions,
     );
 
+    console.log(filePath, computedPath);
+
     const newFileContent = render(filePath, substitutions);
+
+    // allow sending a function to determine the parser based on the file extension
+    const prettierParser =
+      typeof options.parser === "function"
+        ? options.parser(computedPath)
+        : options.parser || "typescript";
     const formattedContent = await prettier.format(newFileContent, {
-      parser: options.parser || "typescript",
+      parser: prettierParser,
     });
 
     if (fs.existsSync(computedPath)) {

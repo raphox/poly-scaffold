@@ -27,8 +27,8 @@
 </script>
 
 <template>
-  <<%= resourceNames.classify %>Details :<%= resourceNames.singular %>="<%=
-  resourceNames.singular %>" />
+  <<%= resourceNames.classify %>Details v-if="<%= resourceNames.singular %>"
+  :<%= resourceNames.singular %>="<%= resourceNames.singular %>" />
 
   <div>
     <RouterLink

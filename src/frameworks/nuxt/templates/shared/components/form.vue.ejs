@@ -5,8 +5,9 @@
   const form = defineModel<T<%= resourceNames.capitalize %>Form>({ required: true });
   const errors = defineModel<T<%= resourceNames.capitalize %>FormErrors>("errors", { required: true });
   const schema = z.object<T<%= resourceNames.capitalize %>ZodSchema>({
-    title: z.string().nonempty(),
-    description: z.string().nonempty(),
+    <%_ attributes.forEach(function({ name, type }) { _%>
+    <%- name %>: z.<%= mapZodType(type) %>(),
+    <%_ }) _%>
   });
 
   const { validate } = useZodValidator(form, errors, schema);
@@ -26,9 +27,9 @@
     <form @submit.prevent="onFormSubmit">
       <%_ attributes.forEach(function({ name, type }) { _%>
       <div>
-        <label :for="`${formId}-${name}`"><%= titleize(name) %>:</label>
-        <input :id="`${formId}-${name}`" type="<%= type %>" v-model="form.title" />
-        <span v-if="errors.title">{{ errors.title }}</span>
+        <label :for="`${formId}-<%= name %>`"><%= titleize(name) %>:</label>
+        <input :id="`${formId}-<%= name %>`" type="<%= type %>" v-model="form.<%= name %>" />
+        <span v-if="errors.<%= name %>">{{ errors.<%= name %> }}</span>
       </div>
       <%_ }) _%>
 

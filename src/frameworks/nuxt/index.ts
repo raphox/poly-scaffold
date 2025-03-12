@@ -1,14 +1,13 @@
 import * as fs from "fs";
 import { generateFiles, OverwriteStrategy } from "@/lib/generate-files";
-import { Framework } from "@/types";
+import { Framework, NormalizedScaffoldSchema } from "@/types";
 import { updateJson } from "@/lib/utils";
 import { getDependenciesVersionsToInstall } from "./dependencies";
-import { TGeneratorOptions } from "../types";
 
 export const generator = async function (
   framework: Framework,
   target: string,
-  options: TGeneratorOptions,
+  options: NormalizedScaffoldSchema,
 ) {
   const templates = framework.templates;
   const srcPath = target;

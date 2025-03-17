@@ -26,6 +26,7 @@ api.interceptors.request.use(
 );
 
 import GettingStarted from './markdowns/getting-started.md';
+import QuickStart from './markdowns/quick-start.md';
 import BackendApi from './markdowns/api-restful.md';
 import BackendRubyOnRails from './markdowns/backend/ruby-on-rails.md';
 import BackendDjango from './markdowns/backend/django.md';
@@ -43,6 +44,12 @@ export const docPages = [
     slug: 'getting-started',
     description: 'Poly Scaffold is a command-line tool for generating scaffold code for various frameworks.',
     content: GettingStarted,
+  },
+  {
+    title: 'Quick Start',
+    slug: 'quick-start',
+    description: 'Poly Scaffold is a command-line tool for generating scaffold code for various frameworks.',
+    content: QuickStart,
   },
   {
     title: 'Backend',

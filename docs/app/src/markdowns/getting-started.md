@@ -18,7 +18,7 @@ You can run the tool using the following command:
 node src/scaffold.js
 ```
 
-<a id="command-line-options"></a>
+<a id="options"></a>
 
 ### Command Line Options
 

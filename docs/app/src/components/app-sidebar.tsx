@@ -43,6 +43,10 @@ const data = {
           title: "Options",
           url: "/docs/getting-started#options",
         },
+        {
+          title: "Quick Start",
+          url: "/docs/quick-start",
+        },
       ],
     },
     {

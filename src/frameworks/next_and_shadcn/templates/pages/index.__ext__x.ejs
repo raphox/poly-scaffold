@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
+<% if (isAppRouter) { _%>
 import { useRouter } from "next/navigation";
+<% } else { _%>
+import { useRouter } from "next/router";
+<% } _%>
 
 export default function HomePage() {
   const { push } = useRouter();

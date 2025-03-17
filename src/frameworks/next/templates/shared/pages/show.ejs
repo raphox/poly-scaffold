@@ -1,6 +1,12 @@
+<% if (isAppRouter) { %>"use client";<% } _%>
+
 import React from "react";
 import Link from "next/link";
-import { useRouter } from 'next/router';
+<% if (isAppRouter) { _%>
+import { useRouter } from "next/navigation";
+<% } else { _%>
+import { useRouter } from "next/router";
+<% } _%>
 import { useParams, useSearchParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -18,11 +24,10 @@ export default function <%= resourceNames.classify %>ShowPage() {
   const { isPending: isDeleting, mutate } = useMutation({
     mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.delete(`/<%= resources %>/${<%= resourceNames.camelize %>Id}`, data),
     onSuccess: () => {
+      const query = new URLSearchParams({ notice: "Removed with success." });
+
       queryClient.invalidateQueries({ queryKey: ["<%= resources %>"] });
-      router.replace({
-        pathname: "/<%= resources %>",
-        query: { notice: "Removed with success." },
-      });
+      router.replace(`/<%= resources %>?${query.toString()}`);
     },
   });
 

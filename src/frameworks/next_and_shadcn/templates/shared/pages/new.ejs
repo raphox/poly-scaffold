@@ -1,6 +1,12 @@
+<% if (isAppRouter) { %>"use client";<% } _%>
+
 import React, { ReactNode } from "react";
 import Link from "next/link";
+<% if (isAppRouter) { _%>
+import { useRouter } from "next/navigation";
+<% } else { _%>
 import { useRouter } from "next/router";
+<% } _%>
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/services";
@@ -17,11 +23,10 @@ export default function <%= resourceNames.classify %>NewPage() {
   const { isPending: isCreating, mutateAsync } = useMutation({
     mutationFn: (data<% if (isTypescript) { %>: <%= resourceNames.classify %>Props<% } %>) => api.post("/<%= resources %>", data),
     onSuccess: ({ data }) => {
+      const query = new URLSearchParams({ notice: "Created with success." });
+
       queryClient.invalidateQueries({ queryKey: ["<%= resources %>"] });
-      router.push({
-        pathname: `/<%= resources %>/${data.id}`,
-        query: { notice: "Created with success." },
-      });
+      router.push(`/posts?${query.toString()}`);
     },
   });
 

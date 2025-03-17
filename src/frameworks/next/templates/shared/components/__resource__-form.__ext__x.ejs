@@ -26,7 +26,7 @@ export default function <%= resourceNames.classify %>Form() {
     <%_ attributes.forEach(function({ name, type }) { _%>
       <p>
         <label htmlFor="<%= name %>"><%= titleize(name) %>:</label>
-        <input type="<%= type %>" {...register("<%= name %>")} />
+        <input type="<%= mapHtmlType(type) %>" {...register("<%= name %>")} />
         {errors.<%= name %> && <span>{errors.<%= name %>.message}</span>}
       </p>
     <%_ }) _%>

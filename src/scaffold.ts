@@ -81,7 +81,7 @@ export async function main() {
 
   let resourceFromArgs = args.resource;
 
-  if (!resourceFromArgs && !args._[0].includes(':')) {
+  if (!resourceFromArgs && args._[0] && !args._[0].includes(':')) {
     resourceFromArgs = args._.shift();
   }
 
@@ -97,7 +97,7 @@ export async function main() {
   // Prompt for target path if not provided
   const target = args.target || await input({
     message: 'Please enter the path where the file will be created:',
-    default: 'tmp/src',
+    default: '.',
     validate: (value) => value.trim() ? true : 'Target path cannot be empty'
   });
 

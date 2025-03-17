@@ -1,6 +1,8 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import { type LucideIcon } from "lucide-react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 import {
@@ -27,6 +29,13 @@ export function NavMain({
     }[];
   }[];
 }) {
+  const [pathname, setPathname] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    setPathname(window.location.pathname + window.location.hash);
+  }, [router.asPath]);
+
   return (
     <SidebarGroup>
       <SidebarMenu>
@@ -39,15 +48,20 @@ export function NavMain({
               </Link>
             </SidebarMenuButton>
             <SidebarMenuSub>
-              {item.items?.map((subItem) => (
-                <SidebarMenuSubItem key={subItem.title}>
-                  <SidebarMenuSubButton asChild>
-                    <Link href={subItem.url}>
-                      <span>{subItem.title}</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-              ))}
+              {item.items?.map((subItem) => {
+                return (
+                  <SidebarMenuSubItem key={subItem.title}>
+                    <SidebarMenuSubButton
+                      asChild
+                      isActive={subItem.url === pathname}
+                    >
+                      <Link href={subItem.url}>
+                        <span>{subItem.title}</span>
+                      </Link>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                );
+              })}
             </SidebarMenuSub>
           </SidebarMenuItem>
         ))}

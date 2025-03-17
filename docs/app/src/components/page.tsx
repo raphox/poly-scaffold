@@ -17,6 +17,7 @@ export interface Props {
 export default function Page(props: Props) {
   const hljs = window.hljs;
   const md = window.markdownit({
+    html: true,
     highlight: function (str: string, lang: string) {
       if (lang && hljs.getLanguage(lang)) {
         try {

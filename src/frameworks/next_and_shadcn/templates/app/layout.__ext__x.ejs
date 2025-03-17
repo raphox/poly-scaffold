@@ -1,17 +1,37 @@
-import React from "react";
+import React, { ReactElement, ReactNode } from "react";
+import { NextPage } from "next";
+import { AppProps } from "next/app";
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+import { AppProvider } from "@/providers";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+
+import "@/styles/globals.css";
+
+<% if (isTypescript) { %>
+export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode,
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout,
+};
+<% } %>
+
+export default function MyApp({ Component, pageProps }<% if (isTypescript) { %>: AppPropsWithLayout<% } %>) {
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout || ((page) => page);
+
   return (
     <html lang="en">
       <body>
-        {/* Layout UI */}
-        {/* Place children where you want to render a page or nested layout */}
-        <main>{children}</main>
+        <AppProvider>
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset>{getLayout(<Component {...pageProps} />)}</SidebarInset>
+          </SidebarProvider>
+        </AppProvider>
       </body>
     </html>
-  )
+  );
 }

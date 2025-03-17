@@ -6,7 +6,7 @@ import * as inflection from 'inflection';
 
 import { Framework, FrameworkTemplate } from '@/types';
 import { TEMPLATE_EXTENSION } from '@/lib/generate-files';
-import { MAPPED_TYPES, MAPPED_ZOD_TYPES } from '@/lib/attributes';
+import { MAPPED_HTML_TYPES, MAPPED_TYPES, MAPPED_ZOD_TYPES } from '@/lib/attributes';
 
 import FRAMEWORKS from './options';
 import GENERATORS from './generators';
@@ -23,6 +23,7 @@ const helpers = {
   underscore: inflection.underscore,
   mapType: (type: keyof typeof MAPPED_TYPES) => MAPPED_TYPES[type] || type,
   mapZodType: (type: keyof typeof MAPPED_ZOD_TYPES) => MAPPED_ZOD_TYPES[type] || type,
+  mapHtmlType: (type: keyof typeof MAPPED_HTML_TYPES) => MAPPED_HTML_TYPES[type] || 'text',
 };
 
 function initFramework(name: string, templatesPath?: string): Framework {

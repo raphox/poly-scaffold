@@ -33,7 +33,7 @@ export default function PostForm() {
           <FormItem>
             <FormLabel>Title:</FormLabel>
             <FormControl>
-              <Input type="string" {...field} />
+              <Input type="text" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -32,13 +32,12 @@ export default function <%= resourceNames.classify %>Form() {
     <%_ attributes.forEach(function({ name, type }) { _%>
       <FormField
         control={control}
-        type="<%= type %>"
         name="<%= name %>"
         render={({ field }) => (
           <FormItem>
             <FormLabel><%= titleize(name) %>:</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input type="<%= mapHtmlType(type) %>" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

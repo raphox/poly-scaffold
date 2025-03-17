@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 
-import { api } from "@/services";
+import { api, docPages } from "@/services";
 import Page, { Props as PageProps } from "@/components/doc";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
@@ -16,21 +15,12 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export default function PageShowPage() {
-  const [titles, setTitles] = useState<string[]>([]);
-  const router = useRouter();
-
-  useEffect(() => {
-    const anchor = router.asPath.split("#")[1] || "";
-    const titles = anchor
-      .split("/")
-      .map((title) => decodeURIComponent(title.replace(/\+/g, " ")));
-    setTitles(titles);
-  }, [router.asPath]);
-
+  const titles = ["Docs"];
   const params = useParams();
   const searchParams = useSearchParams();
   const notice = searchParams.get("notice");
-  const pageId = params?.id;
+  const pageId =
+    params?.slug && docPages.findIndex((page) => page.slug === params.slug) + 1;
 
   const { isPending, error, data } = useQuery<PageProps>({
     queryFn: () => api.get(`/pages/${pageId}`).then((res) => res.data),
@@ -43,6 +33,8 @@ export default function PageShowPage() {
   } else if (error) {
     return "An error has occurred: " + (error as Error).message;
   }
+
+  titles.push(...data.title.split("/"));
 
   return (
     <>

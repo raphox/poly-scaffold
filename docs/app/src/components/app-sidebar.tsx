@@ -16,7 +16,7 @@ const data = {
     {
       name: "Poly Scaffold",
       logo: GalleryVerticalEnd,
-      plan: "Documentation v1.0.0",
+      plan: "Documentation v.1.0",
     },
   ],
   navMain: [
@@ -37,11 +37,11 @@ const data = {
       items: [
         {
           title: "Installation",
-          url: "/docs/1#Getting+Started/Installation",
+          url: "/docs/getting-started#installation",
         },
         {
           title: "Options",
-          url: "/docs/1#Getting+Started/Options",
+          url: "/docs/getting-started#options",
         },
       ],
     },
@@ -51,23 +51,23 @@ const data = {
       items: [
         {
           title: "API RESTful",
-          url: "/docs/2#Backend/API+RESTful",
+          url: "/docs/backend",
         },
         {
           title: "Ruby on Rails",
-          url: "/docs/3#Backend/Ruby+on+Rails",
+          url: "/docs/backend-ruby-on-rails",
         },
         {
           title: "Django",
-          url: "/docs/4#Backend/Django",
+          url: "/docs/backend-django",
         },
         {
           title: "Laravel",
-          url: "/docs/5#Backend/Laravel",
+          url: "/docs/backend-laravel",
         },
         {
           title: "Express.js",
-          url: "/docs/6#Backend/Express.js",
+          url: "/docs/backend-express",
         },
       ],
     },
@@ -77,23 +77,23 @@ const data = {
       items: [
         {
           title: "Frameworks",
-          url: "/docs/7#Frontend/Frameworks",
+          url: "/docs/frontend",
         },
         {
           title: "Next.js",
-          url: "/docs/8#Frontend/Next.js",
+          url: "/docs/frontend-nextjs",
         },
         {
           title: "Next.js + Shadcn",
-          url: "/docs/8#Frontend/Next.js+and+Shadcn",
+          url: "/docs/frontend-nextjs#shadcn",
         },
         {
           title: "Nuxt.js",
-          url: "/docs/9#Frontend/Nuxt.js",
+          url: "/docs/frontend-nuxt",
         },
         {
           title: "Nuxt.js + Shadcn",
-          url: "/docs/9#Frontend/Nuxt.js+and+Shadcn",
+          url: "/docs/frontend-nuxt#shadcn",
         },
       ],
     },
@@ -103,15 +103,15 @@ const data = {
       items: [
         {
           title: "Axios",
-          url: "/docs/10#Features/Axios",
+          url: "/docs/features#axios",
         },
         {
           title: "Form Validation",
-          url: "/docs/10#Features/Form-Validation",
+          url: "/docs/features#form-validation",
         },
         {
           title: "React Query",
-          url: "/docs/10#Features/React-Query",
+          url: "/docs/features#react-query",
         },
       ],
     },
@@ -121,11 +121,11 @@ const data = {
       items: [
         {
           title: "Improviments",
-          url: "/docs/11#Contributing/Improviments",
+          url: "/docs/contributing#improments",
         },
         {
           title: "New Frameworks",
-          url: "/docs/11#Contributing/New+Frameworks",
+          url: "/docs/contributing#new-frameworks",
         },
       ],
     },

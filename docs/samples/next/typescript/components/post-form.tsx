@@ -22,7 +22,7 @@ export default function PostForm() {
     <>
       <p>
         <label htmlFor="title">Title:</label>
-        <input type="string" {...register("title")} />
+        <input type="text" {...register("title")} />
         {errors.title && <span>{errors.title.message}</span>}
       </p>
       <p>

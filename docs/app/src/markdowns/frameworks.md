@@ -4,9 +4,10 @@ Each framework has its own set of templates and dependencies. The templates are 
 
 The following frameworks are supported:
 
-- Next.js
-- Next.js and Shadcn
-- Nuxt.js
+- [Next.js](frontend-nextjs)
+- [Next.js and Shadcn](frontend-nextjs#shadcn)
+- [Nuxt](frontend-nuxt)
+- [Nuxt and Shadcn](frontend-nuxt#shadcn)
 
 ## The following is the structure of the `frameworks` directory:
 
@@ -82,6 +83,6 @@ The following frameworks are supported:
 │       └── styles
 │           └── globals.css.ejs
 ├── nuxt
-│   └── index.ts
+│   └── ...
 └── options.ts
 ```

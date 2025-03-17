@@ -37,59 +37,70 @@ import FrameworkNuxt from './markdowns/frameworks/nuxt.md';
 import Features from './markdowns/features.md';
 import Contributing from './markdowns/contributing.md';
 
-const defaultData = [
+export const docPages = [
   {
     title: 'Getting Started',
+    slug: 'getting-started',
     description: 'Poly Scaffold is a command-line tool for generating scaffold code for various frameworks.',
     content: GettingStarted,
   },
   {
     title: 'Backend',
+    slug: 'backend',
     description: 'Using the generated code, you can create a backend API using various frameworks.',
     content: BackendApi,
   },
   {
     title: 'Backend / Ruby on Rails',
+    slug: 'backend-ruby-on-rails',
     description: 'Ruby on Rails is a web application framework written in Ruby.',
     content: BackendRubyOnRails,
   },
   {
     title: 'Backend / Django',
+    slug: 'backend-django',
     description: 'Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design.',
     content: BackendDjango,
   },
   {
     title: 'Backend / Laravel',
+    slug: 'backend-laravel',
     description: 'Laravel is a web application framework with expressive, elegant syntax.',
     content: BackendLaravel,
   },
   {
     title: 'Backend / Express.js',
+    slug: 'backend-express',
     description: 'Express.js is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.',
     content: BackendExpress,
   },
   {
     title: 'Frontend',
+    slug: 'frontend',
     description: 'Using the generated code, you can create a frontend using various frameworks.',
     content: Frameworks,
   },
   {
     title: 'Frontend / Next.js',
+    slug: 'frontend-nextjs',
     description: 'Next.js is a React framework that enables server-side rendering and static site generation.',
     content: FrameworksNextJs,
   },
   {
     title: 'Frontend / Nuxt.js',
+    slug: 'frontend-nuxt',
     description: 'Nuxt.js is a Vue framework that enables server-side rendering and static site generation.',
     content: FrameworkNuxt,
   },
   {
     title: 'Features',
+    slug: 'features',
     description: 'Poly Scaffold is a command-line tool for generating scaffold code for various frameworks.',
     content: Features,
   },
   {
     title: 'Contributing',
+    slug: 'contributing',
     description: 'Poly Scaffold is a command-line tool for generating scaffold code for various frameworks.',
     content: Contributing,
   },
@@ -97,14 +108,15 @@ const defaultData = [
 
 function setupLocalDatabase() {
   const db = new Dexie('MyDatabase');
+  const version = parseInt(process.env.NEXT_PUBLIC_DOC_VERSION || '0', 10);
 
-  db.version(1).stores({
-    pages: '++id, title, description, content',
+  db.version(version).stores({
+    pages: '++id, slug, title, description, content',
   })
 
   db.on('populate', (tx: Transaction) => {
     tx.table('pages').clear();
-    tx.table('pages').bulkAdd(defaultData);
+    tx.table('pages').bulkAdd(docPages);
   });
 
   return db;

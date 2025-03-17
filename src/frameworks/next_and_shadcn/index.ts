@@ -28,7 +28,7 @@ export const generator = async function (framework: Framework, target: string, o
         'edit.ejs': '__resources__/[id]/edit/page.__ext__x.ejs',
       },
       files: Object.values(templates['shared/pages']),
-      target: `${srcPath}/pages`,
+      target: `${srcPath}/app`,
       substitutions: options,
       render: framework.render,
       options: { overwriteStrategy: OverwriteStrategy.Overwrite }

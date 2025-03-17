@@ -48,6 +48,27 @@ export const MAPPED_TYPES: { [key in ColumnType]: AttributeType } = {
   uuid: 'string',
 };
 
+export const MAPPED_HTML_TYPES: { [key in ColumnType]: string } = {
+  bigint: 'number',
+  binary: 'number',
+  blob: 'boolean',
+  boolean: 'boolean',
+  date: 'date',
+  datetime: 'datetime-local',
+  decimal: 'number',
+  float: 'number',
+  integer: 'number',
+  json: 'object',
+  jsonb: 'object',
+  primary_key: 'number',
+  references: 'number',
+  string: 'text',
+  text: 'text',
+  time: 'time',
+  timestamp: 'datetime-local',
+  uuid: 'text',
+};
+
 type ZodType = 'boolean' | 'date' | 'number' | 'object' | 'string';
 
 // Map column types to Zod types

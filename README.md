@@ -18,6 +18,8 @@ You can run the tool using the following command:
 node src/scaffold.js
 ```
 
+<a id="command-line-options"></a>
+
 ### Command Line Options
 
 - `--help`: Show help [boolean]
@@ -31,7 +33,7 @@ node src/scaffold.js
 ### Example
 
 ```bash
-pscaffold next post title:string description:text -t ./
+pscaffold post title:string description:text -t ./
 
 # Result:
 
@@ -52,7 +54,7 @@ pscaffold next post title:string description:text -t ./
 └── services.ts
 ```
 
-Sample of generated code: [docs/samples](https://github.com/raphox/poly-scaffold/blob/gh-page/docs/samples).
+Sample of generated code: [docs/sample/src](docs/samples).
 
 ## Development
 

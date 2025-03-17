@@ -1,0 +1,7 @@
+import React, { ReactNode } from "react";
+
+import LayoutBase from "@/components/layout";
+
+export default function Layout({ children }<% if (isTypescript) { %>: { children: ReactNode }<% } %>) {
+  return <LayoutBase>{children}</LayoutBase>;
+}

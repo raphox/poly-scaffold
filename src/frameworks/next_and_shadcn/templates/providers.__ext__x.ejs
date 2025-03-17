@@ -76,7 +76,9 @@ export function FormProvider({ children, values, resolver, onSubmit }<% if (isTy
 
   return (
     <FormProviderBase setError={setError} {...formProps}>
-      <Form onSubmit={handleSubmit}>{children}</Form>
+      <Form onSubmit={handleSubmit} className="space-y-4">
+        {children}
+      </Form>
     </FormProviderBase>
   );
 }

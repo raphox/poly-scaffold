@@ -53,7 +53,7 @@ export async function generateFiles(
     {
       files: string[],
       target: string,
-      remaps?: { [k: string]: string },
+      remaps?: { [k: string]: string | null },
       substitutions: { [k: string]: any },
       render: (template: string, data: any) => string,
       options: GenerateFilesOptions
@@ -72,6 +72,12 @@ export async function generateFiles(
 
     const newFileContent = render(filePath, substitutions);
     const formattedContent = await prettier.format(newFileContent, { parser: options.parser || 'typescript' });
+
+    if (computedPath === null) {
+      log(chalk.yellow(`[SKIPPED] ${filePath}`));
+
+      continue;
+    }
 
     if (fs.existsSync(computedPath)) {
       const existingContent = fs.readFileSync(computedPath, 'utf-8');
@@ -127,10 +133,10 @@ export async function overwriteFile(filePath: string, content: string, options: 
 function computePath(
   srcFolder: string,
   target: string,
-  remaps: { [k: string]: string } | undefined,
+  remaps: { [k: string]: string | null } | undefined,
   filePath: string,
   substitutions: Record<string, string>
-): string {
+): string | null {
   if (!path.isAbsolute(srcFolder)) {
     throw new Error('Source folder must be an absolute path');
   }
@@ -138,7 +144,11 @@ function computePath(
   let computedPath = path.relative(srcFolder, filePath);
 
   if (remaps?.[computedPath]) {
-    computedPath = remaps[computedPath];
+    const remap = remaps[computedPath];
+
+    if (remap === null) return null;
+
+    computedPath = remap;
   }
 
   if (computedPath.endsWith(TEMPLATE_EXTENSION)) {

@@ -1,6 +1,4 @@
-import React, { ReactElement, ReactNode } from "react";
-import { NextPage } from "next";
-import { AppProps } from "next/app";
+import React, { ReactNode } from "react";
 
 import { AppProvider } from "@/providers";
 import { AppSidebar } from "@/components/app-sidebar";
@@ -8,27 +6,14 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 import "@/styles/globals.css";
 
-<% if (isTypescript) { %>
-export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode,
-};
-
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout,
-};
-<% } %>
-
-export default function MyApp({ Component, pageProps }<% if (isTypescript) { %>: AppPropsWithLayout<% } %>) {
-  // Use the layout defined at the page level, if available
-  const getLayout = Component.getLayout || ((page) => page);
-
+export default function Layout({ children }<% if (isTypescript) { %>: { children: ReactNode }<% } %>) {
   return (
     <html lang="en">
       <body>
         <AppProvider>
           <SidebarProvider>
             <AppSidebar />
-            <SidebarInset>{getLayout(<Component {...pageProps} />)}</SidebarInset>
+            <SidebarInset>{children}</SidebarInset>
           </SidebarProvider>
         </AppProvider>
       </body>

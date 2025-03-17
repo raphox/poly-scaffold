@@ -20,11 +20,10 @@ export default function PostShowPage() {
   const { isPending: isDeleting, mutate } = useMutation({
     mutationFn: () => api.delete(`/posts/${postId}`),
     onSuccess: () => {
+      const query = new URLSearchParams({ notice: "Removed with success." });
+
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      router.replace({
-        pathname: "/posts",
-        query: { notice: "Removed with success." },
-      });
+      router.replace(`/posts?${query.toString()}`);
     },
   });
 

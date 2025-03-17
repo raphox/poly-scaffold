@@ -27,7 +27,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
 }
 
 import axios, { AxiosResponse } from "axios";
-
 import {
   useForm,
   FormProvider as FormProviderBase,
@@ -80,9 +79,7 @@ export function FormProvider({
 
   return (
     <FormProviderBase setError={setError} {...formProps}>
-      <Form onSubmit={handleSubmit} className="space-y-4">
-        {children}
-      </Form>
+      <Form onSubmit={handleSubmit}>{children}</Form>
     </FormProviderBase>
   );
 }

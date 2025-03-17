@@ -17,11 +17,10 @@ export default function PostNewPage() {
   const { isPending: isCreating, mutateAsync } = useMutation({
     mutationFn: (data: PostProps) => api.post("/posts", data),
     onSuccess: ({ data }) => {
+      const query = new URLSearchParams({ notice: "Created with success." });
+
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      router.push({
-        pathname: `/posts/${data.id}`,
-        query: { notice: "Created with success." },
-      });
+      router.push(`/posts?${query.toString()}`);
     },
   });
 

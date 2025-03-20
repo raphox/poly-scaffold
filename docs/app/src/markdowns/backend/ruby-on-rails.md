@@ -161,3 +161,77 @@ bin/rails server
 Access the API at [http://localhost:3000/api/posts](http://localhost:3000/api/posts).
 
 This API could be used as a backend for a frontend application built with a framework like React, Vue, or Angular.
+
+# Hosting a Next.js application (Static Exports) in a Ruby on Rails application
+
+Next.js enables starting as a static site or Single-Page Application (SPA), then later optionally upgrading to use features that require a server.
+
+When running next build, Next.js generates an HTML file per route. By breaking a strict SPA into individual HTML files, Next.js can avoid loading unnecessary JavaScript code on the client-side, reducing the bundle size and enabling faster page loads.
+
+Since Next.js supports this static export, it can be deployed and hosted on any web server that can serve HTML/CSS/JS static assets.
+
+Get more information at [https://nextjs.org/docs/app/building-your-application/deploying/static-exports](https://nextjs.org/docs/app/building-your-application/deploying/static-exports).
+
+Usually, you can host a Next.js application on a static site hosting service like Vercel, Netlify, or GitHub Pages. But if you want, you can host it in a Ruby on Rails application. If you chose to host it in a Ruby on Rails application, you don't need to have two separate applications for the frontend and backend. It could be a good choice if you want to keep everything in one place and pay for only one hosting service.
+
+Here's how you can host a Next.js application in a Ruby on Rails application:
+
+1. Create your Ruby on Rails application.
+
+```shell
+rails new my-rails-app
+cd my-rails-app
+```
+
+2. Create a new Next.js application inside the Ruby on Rails application.
+
+```shell
+npx create-next-app@latest frontend
+cd frontend
+```
+
+3. Build the Next.js application.
+
+   Change Next.js build settings in `next.config.js` to export the application as static HTML files.
+
+```javascript
+// Change the next.config.js
+module.exports = {
+  output: "export",
+  trailingSlash: true,
+  distDir: process.argv[2] === "build" ? "../public" : ".next",
+  images: {
+    unoptimized: true,
+  },
+  //...
+};
+```
+
+4. Build the Next.js application.
+
+```shell
+npm run build
+```
+
+5. Add new routes settings on Ruby on Rails application to allow dynamic routing from Next.js.
+
+```ruby
+# config/routes.rb
+
+Rails.application.routes.draw do
+  # ...
+
+  parameter_regex = /\[([a-zA-Z0-9_-]+)\]/
+  static_files_path = Rails.root.join("public").to_s
+  static_files = File.join(static_files_path, "**", "index.html")
+
+  Dir.glob(static_files).each do |path|
+    next unless path.match?(parameter_regex)
+
+    route = path[%r{#{Regexp.escape(static_files_path)}(.*)/index.html}, 1]
+    route = route.gsub(parameter_regex, ':\1')
+
+    get route, to: "next_rails_scaffold/static_pages#index", file_path: path
+  end
+end
+```

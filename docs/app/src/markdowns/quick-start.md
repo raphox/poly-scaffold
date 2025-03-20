@@ -44,6 +44,12 @@ Create a new CRUD using the following command:
 pscaffold post title:string description:text -t ./
 ```
 
+Set your API URL in the `.env.local` file:
+
+```bash
+NEXT_PUBLIC_API_URL=https://poly-scaffold.free.beeceptor.com
+```
+
 Install the dependencies and run the app:
 
 ```bash

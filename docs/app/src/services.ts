@@ -119,10 +119,14 @@ function setupLocalDatabase() {
 
   db.version(version).stores({
     pages: '++id, slug, title, description, content',
-  })
+  }).upgrade((tx: Transaction) => {
+    db.delete().then(() => {
+      db.open();
+      tx.table('pages').bulkAdd(docPages);
+    });
+  });
 
   db.on('populate', (tx: Transaction) => {
-    tx.table('pages').clear();
     tx.table('pages').bulkAdd(docPages);
   });
 

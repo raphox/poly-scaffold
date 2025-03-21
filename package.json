@@ -2,6 +2,11 @@
   "name": "poly-scaffold",
   "version": "1.0.0",
   "description": "A Node package to generate scaffold for CRUD features in different frameworks",
+  "homepage": "https://github.com/raphox/poly-scaffold#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raphox/poly-scaffold.git"
+  },
   "main": "index.js",
   "bin": {
     "pscaffold": "./dist/bin/cli.js"

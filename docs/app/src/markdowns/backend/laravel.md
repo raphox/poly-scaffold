@@ -8,6 +8,15 @@ Whether you are new to PHP web frameworks or have years of experience, Laravel i
 
 Get more informations at [https://laravel.com/docs](https://laravel.com/docs).
 
+## Summary
+
+1. [Installing PHP and the Laravel Installer](#installing-php-and-the-laravel-installer)
+2. [Creating an Application](#creating-an-application)
+3. [Creating the API](#creating-the-api)
+4. [Hosting a Next.js application (Static Exports) in a Laravel application](#hosting-a-nextjs-application-static-exports-in-a-laravel-application)
+
+<a id="installing-php-and-the-laravel-installer"></a>
+
 ## Installing PHP and the Laravel Installer
 
 Before creating your first Laravel application, make sure that your local machine has [PHP](https://php.net), [Composer](https://getcomposer.org), and [the Laravel installer](https://github.com/laravel/installer) installed. In addition, you should install either [Node and NPM](https://nodejs.org) or [Bun](https://bun.sh/) so that you can compile your application's frontend assets.
@@ -33,6 +42,8 @@ If you already have PHP and Composer installed, you may install the Laravel inst
 composer global require laravel/installer
 ```
 
+<a id="creating-an-application"></a>
+
 ## Creating an Application
 
 After you have installed PHP, Composer, and the Laravel installer, you're ready to create a new Laravel application. The Laravel installer will prompt you to select your preferred testing framework, database, and starter kit:
@@ -46,6 +57,8 @@ Once the application has been created, you can start Laravel's local development
 ```shell
 cd example-app
 ```
+
+<a id="creating-the-api"></a>
 
 ## Creating the API
 
@@ -201,3 +214,13 @@ php artisan serve
 Access the API at [http://localhost:8000/api/posts](http://localhost:8000/api/posts).
 
 This API could be used as a backend for a frontend application built with a framework like React, Vue, or Angular.
+
+## Hosting a Next.js application (Static Exports) in a Laravel application
+
+You don't need to use [https://inertiajs.com/](https://inertiajs.com/). You can host a Next.js application (Static Exports) in a Laravel application.
+
+Another advantage of this approach is that you or your team can work on the frontend and backend separately. You don't need learn a new framework like Inertia.js or Livewire. Your frontend team can work with React, Vue, or Angular, and your backend team can work with Laravel.
+
+Check a example using Ruby on Rails [here](docs/backend-ruby-on-rails#hosting-a-nextjs-application-static-exports-in-a-ruby-on-rails-application).
+
+_In progress..._

@@ -4,6 +4,15 @@ Django is a high-level Python web framework that encourages rapid development an
 
 Get more information at [https://www.djangoproject.com/](https://www.djangoproject.com/).
 
+## Summary
+
+1. [Installing Python](#installing-python)
+2. [Installing Django](#installing-django)
+3. [Creating the API](#creating-the-api)
+4. [Hosting a Next.js application (Static Exports) in a Django application](#hosting-a-nextjs-application-static-exports-in-a-django-application)
+
+<a id="installing-python"></a>
+
 ## Installing Python
 
 On many systems Python comes pre-installed, you can try running the python command to start the Python interpreter to check and see if it is already installed. On windows you can try the py command which is a launcher which is more likely to work. If it is installed you will see a response which will include the version number, for example:
@@ -66,6 +75,8 @@ pacman -S python3
 
 Get more information at [https://wiki.python.org/moin/BeginnersGuide/Download](https://wiki.python.org/moin/BeginnersGuide/Download).
 
+<a id="installing-django"></a>
+
 ## Installing Django
 
 nstallation instructions are slightly different depending on whether you’re installing a distribution-specific package, downloading the latest official release, or fetching the latest development version.
@@ -79,6 +90,8 @@ source myvenv/bin/activate
 
 pip install django
 ```
+
+<a id="creating-the-api"></a>
 
 ## Creating the API
 
@@ -193,3 +206,11 @@ python manage.py runserver
 You can now access the API at [http://localhost:8000/api/posts](http://localhost:8000/api/posts).
 
 This API could be used as a backend for a frontend application built with a framework like React, Vue, or Angular.
+
+<a id="hosting-a-nextjs-application-static-exports-in-a-django-application"></a>
+
+## Hosting a Next.js application (Static Exports) in a Django application
+
+Check a example using Ruby on Rails [here](docs/backend-ruby-on-rails#hosting-a-nextjs-application-static-exports-in-a-ruby-on-rails-application).
+
+_In progress..._

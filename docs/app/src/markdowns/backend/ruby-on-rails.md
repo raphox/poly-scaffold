@@ -8,6 +8,16 @@ Whether you are new to web frameworks or have years of experience, Rails is a fr
 
 Get more information at https://guides.rubyonrails.org.
 
+## Summary
+
+1. [Installing Ruby](#installing-ruby)
+2. [Installing Rails](#installing-rails)
+3. [Creating an Application](#creating-an-application)
+4. [Creating the API](#creating-the-api)
+5. [Hosting a Next.js application (Static Exports) in a Ruby on Rails application](#hosting-a-nextjs-application-static-exports-in-a-ruby-on-rails-application)
+
+<a id="installing-ruby"></a>
+
 ## Installing Ruby
 
 ### Install Ruby on macOS
@@ -98,6 +108,8 @@ $ ruby --version
 ruby 3.3.6
 ```
 
+<a id="installing-rails"></a>
+
 ## Installing Rails
 
 A "gem" in Ruby is a self-contained package of a library or Ruby program. We can use Ruby's `gem` command to install the latest version of Rails and its dependencies from [RubyGems.org](https://rubygems.org).
@@ -117,6 +129,8 @@ Rails 8.0.0
 
 NOTE: If the `rails` command is not found, try restarting your terminal.
 
+<a id="creating-an-application"></a>
+
 ## Creating an Application
 
 After you have installed Ruby, Bundler, and Rails, you're ready to create a new Rails application. The Rails installer will prompt you to select your preferred testing framework, database, and starter kit:
@@ -130,6 +144,8 @@ Once the application has been created, you can start Rails' local development se
 ```shell
 cd example_app
 ```
+
+<a id="creating-the-api"></a>
 
 ## Creating the API
 
@@ -162,6 +178,8 @@ Access the API at [http://localhost:3000/api/posts](http://localhost:3000/api/po
 
 This API could be used as a backend for a frontend application built with a framework like React, Vue, or Angular.
 
+<a id="hosting-a-nextjs-application-static-exports-in-a-ruby-on-rails-application"></a>
+
 # Hosting a Next.js application (Static Exports) in a Ruby on Rails application
 
 Next.js enables starting as a static site or Single-Page Application (SPA), then later optionally upgrading to use features that require a server.
@@ -172,7 +190,9 @@ Since Next.js supports this static export, it can be deployed and hosted on any 
 
 Get more information at [https://nextjs.org/docs/app/building-your-application/deploying/static-exports](https://nextjs.org/docs/app/building-your-application/deploying/static-exports).
 
-Usually, you can host a Next.js application on a static site hosting service like Vercel, Netlify, or GitHub Pages. But if you want, you can host it in a Ruby on Rails application. If you chose to host it in a Ruby on Rails application, you don't need to have two separate applications for the frontend and backend. It could be a good choice if you want to keep everything in one place and pay for only one hosting service.
+Usually, you can host a Next.js application on a static site hosting service like Vercel, Netlify, or GitHub Pages. But if you want, you can host it in a Ruby on Rails application. If you chose to host it in a Ruby on Rails application, you don't need to have two separate applications for the frontend and backend.
+
+> **TIP:** It could be a good choice if you want to keep everything in one place and pay for **ONLY ONE HOSTING SERVICE**.
 
 Here's how you can host a Next.js application in a Ruby on Rails application:
 

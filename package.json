@@ -1,6 +1,6 @@
 {
   "name": "poly-scaffold",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A Node package to generate scaffold for CRUD features in different frameworks",
   "homepage": "hhttps://raphox.github.io/poly-scaffold/",
   "repository": {
